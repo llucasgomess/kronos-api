@@ -1,6 +1,9 @@
 import fastifyCors from '@fastify/cors'
+import fastifySwagger from '@fastify/swagger'
+import fastifySwaggerUi from '@fastify/swagger-ui'
 import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import {
+  jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
   ZodTypeProvider,
@@ -15,6 +18,19 @@ server.setValidatorCompiler(validatorCompiler)
 
 //Plugins
 server.register(fastifyCors)
+server.register(fastifySwagger, {
+  openapi: {
+    info: {
+      title: 'API Kronos',
+      version: '0.0.1',
+    },
+  },
+  transform: jsonSchemaTransform,
+})
+
+server.register(fastifySwaggerUi, {
+  routePrefix: '/docs',
+})
 
 //rotas
 server.get('/', (req: FastifyRequest, replay: FastifyReply) => {
