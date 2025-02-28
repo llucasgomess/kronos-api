@@ -8,6 +8,8 @@ import {
   validatorCompiler,
   ZodTypeProvider,
 } from 'fastify-type-provider-zod'
+import allocationRoutes from './routes/allocation.route'
+import cellRoutes from './routes/cela.route'
 import prisonersRoutes from './routes/preso.route'
 
 //Instaciar o servidor
@@ -40,6 +42,8 @@ server.get('/', (req: FastifyRequest, replay: FastifyReply) => {
 
 //rotas
 server.register(prisonersRoutes)
+server.register(allocationRoutes)
+server.register(cellRoutes)
 
 //configurações de porta
 server.listen(
