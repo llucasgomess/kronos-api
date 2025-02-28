@@ -10,6 +10,7 @@ import {
 } from 'fastify-type-provider-zod'
 import allocationRoutes from './routes/allocation.route'
 import cellRoutes from './routes/cela.route'
+import infringementRoutes from './routes/infringement.route'
 import prisonersRoutes from './routes/preso.route'
 
 //Instaciar o servidor
@@ -44,6 +45,7 @@ server.get('/', (req: FastifyRequest, replay: FastifyReply) => {
 server.register(prisonersRoutes)
 server.register(allocationRoutes)
 server.register(cellRoutes)
+server.register(infringementRoutes)
 
 //configurações de porta
 server.listen(
