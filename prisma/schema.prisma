@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Detento {
+  id           String  @id @default(uuid()) // Identificador único
+  nome         String
+  idade        Int
+  cpf          String  @unique
+  filiacao     String?
+  estadoCivil  String?
+  foto         String? // URL da foto do detento
+  reincidencia Boolean @default(false)
+
+  // Relacionamentos
+  alocacoes      Alocacao[]
+  infracoes      Infracao[]
+  transferencias Transferencia[]
+  visitas        Visita[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+model Cela {
+  id         String @id @default(uuid())
+  numero     Int    @unique
+  capacidade Int
+  pavilhao   String // Pode ser A, B ou C
+
+  alocacoes             Alocacao[]
+  transferenciasOrigem  Transferencia[] @relation("TransferenciaOrigem")
+  transferenciasDestino Transferencia[] @relation("TransferenciaDestino")
+}
+
+model Alocacao {
+  id           String   @id @default(uuid())
+  detentoId    String   @unique
+  celaId       String
+  dataAlocacao DateTime @default(now())
+
+  detento Detento @relation(fields: [detentoId], references: [id])
+  cela    Cela    @relation(fields: [celaId], references: [id])
+}
+
+model Infracao {
+  id           String   @id @default(uuid())
+  detentoId    String
+  descricao    String
+  dataInfracao DateTime @default(now())
+
+  detento Detento @relation(fields: [detentoId], references: [id])
+}
+
+model Transferencia {
+  id                String   @id @default(uuid())
+  detentoId         String
+  celaOrigemId      String
+  celaDestinoId     String
+  dataTransferencia DateTime @default(now())
+
+  detento     Detento @relation(fields: [detentoId], references: [id])
+  celaOrigem  Cela    @relation("TransferenciaOrigem", fields: [celaOrigemId], references: [id])
+  celaDestino Cela    @relation("TransferenciaDestino", fields: [celaDestinoId], references: [id])
+}
+
+model Visita {
+  id          String   @id @default(uuid())
+  detentoId   String
+  visitanteId String
+  dataVisita  DateTime @default(now())
+
+  detento    Detento   @relation(fields: [detentoId], references: [id])
+  visitante  Visitante @relation(fields: [visitanteId], references: [id])
+  Advogado   Advogado? @relation(fields: [advogadoId], references: [id])
+  advogadoId String?
+}
+
+model Visitante {
+  id             String   @id @default(uuid())
+  nome           String
+  grauParentesco String?
+  visitas        Visita[]
+}
+
+model Advogado {
+  id        String   @id @default(uuid())
+  nome      String
+  oabNumero String   @unique
+  visitas   Visita[]
+}
+
+model Usuario {
+  id             String @id @default(uuid())
+  nome           String
+  cargo          String // Inspetor, Administrador
+  nivelPermissao Int
+  login          String @unique
+  senha          String
+}
