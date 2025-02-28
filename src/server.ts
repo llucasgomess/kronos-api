@@ -8,6 +8,7 @@ import {
   validatorCompiler,
   ZodTypeProvider,
 } from 'fastify-type-provider-zod'
+import prisonersRoutes from './routes/preso.route'
 
 //Instaciar o servidor
 const server: FastifyInstance = fastify().withTypeProvider<ZodTypeProvider>()
@@ -36,6 +37,9 @@ server.register(fastifySwaggerUi, {
 server.get('/', (req: FastifyRequest, replay: FastifyReply) => {
   replay.status(200).send({ message: 'servidor ok' })
 })
+
+//rotas
+server.register(prisonersRoutes)
 
 //configurações de porta
 server.listen(
