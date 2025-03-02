@@ -98,8 +98,8 @@ export const deleteInfringementService = async (
       return res.status(404).send({ message: 'Infração não encontrada' })
     }
 
-    const deletedInfracao = await deleteInfringementByIdModel(id)
-    res.send(deletedInfracao)
+    await deleteInfringementByIdModel(id)
+    res.status(200).send({ message: 'Infração deletada' })
   } catch (error) {
     console.error('Erro ao deletar infracao:', error)
     res.code(500).send({ error: 'Erro interno do servidor' })

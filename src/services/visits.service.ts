@@ -20,14 +20,9 @@ export const createVisitsService = async (
   const { detentoId, visitanteId, advogadoId, dataVisita } =
     validationBody.parse(req.body)
 
-  const visita = createVisitsModel(
-    detentoId,
-    visitanteId,
-    advogadoId,
-    dataVisita
-  )
+  await createVisitsModel(detentoId, visitanteId, advogadoId, dataVisita)
 
-  return res.status(201).send(visita)
+  return res.status(201).send({ message: 'Visita registrada com sucesso' })
 }
 
 export const getAllVisitsService = async (
@@ -59,7 +54,7 @@ export const updateVisitsService = async (
 
   const visita = await updateVisitsModel(id, dataVisita)
 
-  return res.send(visita)
+  return res.status(200).send(visita)
 }
 
 export const deleteVisitsService = async (
@@ -72,5 +67,5 @@ export const deleteVisitsService = async (
   const { id } = validationParams.parse(req.params)
 
   await deleteVisitsModel(id)
-  return res.status(204).send()
+  return res.status(200).send({ message: 'Registro apagado' })
 }

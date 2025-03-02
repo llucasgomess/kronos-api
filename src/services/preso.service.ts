@@ -1,7 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-import { detentoBodySchema } from '../constrollers/preso.controller.js'
 import {
   createPrisonerModel,
   deletePrisonerModel,
@@ -9,6 +8,7 @@ import {
   getPrisonerByIdModel,
   updatePrisonerModel,
 } from '../models/preso.model.js'
+import { detentoBodySchema } from '../validations/prisoner.js'
 
 type NewDetento = z.infer<typeof detentoBodySchema>
 

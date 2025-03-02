@@ -59,7 +59,7 @@ export const getAllTransferPrisonerService = async (
 
     return res
       .status(200)
-      .send({ message: 'Transferência registrada com sucesso', tranferencias })
+      .send({ message: 'Transferência registrada com sucesso' })
   } catch (error) {}
 }
 export const updateTransferPrisonerService = async (
@@ -96,7 +96,9 @@ export const updateTransferPrisonerService = async (
       data: { celaDestinoId },
     })
 
-    return res.send({ message: 'Transferência atualizada com sucesso' })
+    return res
+      .status(200)
+      .send({ message: 'Transferência atualizada com sucesso' })
   } catch (error) {}
 }
 export const deleteTransferPrisonerService = async (
@@ -116,6 +118,6 @@ export const deleteTransferPrisonerService = async (
     }
 
     await deleteTransferPrisonerModel(id)
-    return res.status(204).send()
+    return res.status(200).send({ message: 'Transferência deletada' })
   } catch (error) {}
 }
