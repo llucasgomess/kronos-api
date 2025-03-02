@@ -13,6 +13,7 @@ import cellRoutes from './routes/cela.route'
 import infringementRoutes from './routes/infringement.route'
 import prisonersRoutes from './routes/preso.route'
 import transferRoutes from './routes/transfer.route'
+import visitsRoutes from './routes/visits.route'
 
 //Instaciar o servidor
 const server: FastifyInstance = fastify().withTypeProvider<ZodTypeProvider>()
@@ -48,6 +49,7 @@ server.register(allocationRoutes)
 server.register(cellRoutes)
 server.register(infringementRoutes)
 server.register(transferRoutes)
+server.register(visitsRoutes)
 
 //configurações de porta
 server.listen(
