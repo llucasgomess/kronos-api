@@ -13,6 +13,7 @@ import cellRoutes from './routes/cela.route'
 import infringementRoutes from './routes/infringement.route'
 import prisonersRoutes from './routes/preso.route'
 import transferRoutes from './routes/transfer.route'
+import visitRoutes from './routes/visit.route'
 import visitsRoutes from './routes/visits.route'
 
 //Instaciar o servidor
@@ -50,6 +51,7 @@ server.register(cellRoutes)
 server.register(infringementRoutes)
 server.register(transferRoutes)
 server.register(visitsRoutes)
+server.register(visitRoutes)
 
 //configurações de porta
 server.listen(
