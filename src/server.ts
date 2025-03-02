@@ -9,6 +9,7 @@ import {
   ZodTypeProvider,
 } from 'fastify-type-provider-zod'
 import allocationRoutes from './routes/allocation.route'
+import attorneyRoutes from './routes/attorney.route'
 import cellRoutes from './routes/cela.route'
 import infringementRoutes from './routes/infringement.route'
 import prisonersRoutes from './routes/preso.route'
@@ -52,6 +53,7 @@ server.register(infringementRoutes)
 server.register(transferRoutes)
 server.register(visitsRoutes)
 server.register(visitRoutes)
+server.register(attorneyRoutes)
 
 //configurações de porta
 server.listen(
