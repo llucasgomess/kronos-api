@@ -46,7 +46,7 @@ model Cela {
 
 model Alocacao {
   id           String   @id @default(uuid())
-  detentoId    String   @unique
+  detentoId    String
   celaId       String
   dataAlocacao DateTime @default(now())
 
