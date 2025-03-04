@@ -1,0 +1,45 @@
+import bcrypt from 'bcryptjs'
+import { FastifyReply, FastifyRequest } from 'fastify'
+import z from 'zod'
+import { createUserModel, getUserByIdModel } from '../models/user.model'
+
+// Função para registrar um novo usuário
+export const createUserService = async (
+  req: FastifyRequest,
+  res: FastifyReply
+) => {
+  const schemaBody = z.object({
+    nome: z.string().min(1, 'Nome é obrigatório'),
+    cpf: z
+      .string()
+      .min(11, 'CPF deve ter no mínimo 11 caracteres')
+      .max(14, 'CPF deve ter no máximo 14 caracteres')
+      .regex(/^\d{11,14}$/, 'CPF deve conter apenas números'),
+    cargo: z.string().min(1, 'Cargo é obrigatório'),
+    nivelPermissao: z
+      .number()
+      .int()
+      .min(0, 'Nível de permissão deve ser um número inteiro positivo'),
+    senha: z.string().min(6, 'Senha deve ter no mínimo 6 caracteres'),
+  })
+
+  const { nome, cpf, cargo, nivelPermissao, senha } = schemaBody.parse(req.body)
+
+  // Verificar se o CPF ou login já estão cadastrados
+  const existingUser = await getUserByIdModel(cpf)
+
+  if (existingUser) {
+    return { success: false, message: 'CPF ou Login já cadastrados!' }
+  }
+
+  // Criptografar a senha
+  const hashedPassword = await bcrypt.hash(senha, 10)
+
+  // Criar o usuário
+  await createUserModel(nome, cpf, cargo, nivelPermissao, hashedPassword)
+
+  res.status(201).send({
+    success: true,
+    message: 'Usuário criado com sucesso!',
+  })
+}
