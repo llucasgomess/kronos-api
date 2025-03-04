@@ -16,12 +16,18 @@ export const createPrisonerService = async (
   req: FastifyRequest,
   res: FastifyReply
 ) => {
-  const newDetento = detentoBodySchema.parse(req.body) // Faz a validação com Zod
+  const newDetento = detentoBodySchema.safeParse(req.body) // Faz a validação com Zod
+  if (!newDetento.success) {
+    return res.code(400).send({
+      error: 'Dados inválidos',
+      issues: newDetento.error.format(),
+    })
+  }
 
   try {
-    await createPrisonerModel(newDetento)
+    await createPrisonerModel(newDetento.data)
 
-    res.code(201).send(newDetento)
+    res.code(201).send(newDetento.data)
   } catch (error) {
     console.error('Erro ao criar detento:', error)
     return res.code(500).send({ error: 'Erro interno do servidor' })
@@ -54,10 +60,16 @@ export const searchPrisonerService = async (
   const validationParams = z.object({
     id: z.string().uuid(),
   })
-  const { id } = validationParams.parse(req.params)
+  const { success, data, error } = validationParams.safeParse(req.params)
+  if (!success) {
+    return res.code(400).send({
+      error: 'Dados inválidos',
+      issues: error.format(),
+    })
+  }
 
   try {
-    const detento = await getPrisonerByIdModel(id)
+    const detento = await getPrisonerByIdModel(data.id)
 
     if (!detento) {
       res
@@ -79,10 +91,16 @@ export const deletePrisonerService = async (
   const validationParams = z.object({
     id: z.string().uuid(),
   })
-  const { id } = validationParams.parse(req.params)
+  const { success, data, error } = validationParams.safeParse(req.params)
+  if (!success) {
+    return res.code(400).send({
+      error: 'Dados inválidos',
+      issues: error.format(),
+    })
+  }
 
   try {
-    const detento = await getPrisonerByIdModel(id)
+    const detento = await getPrisonerByIdModel(data.id)
 
     if (!detento) {
       res
@@ -91,9 +109,9 @@ export const deletePrisonerService = async (
       return
     }
 
-    await deletePrisonerModel(id)
+    await deletePrisonerModel(data.id)
 
-    res.code(200).send({ message: 'Detento deletado', detento })
+    res.code(200).send({ message: 'Detento deletado' })
   } catch (error) {
     console.error('Erro ao deletar detento:', error)
     return res.code(500).send({ error: 'Erro interno do servidor' })
