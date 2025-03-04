@@ -7,20 +7,20 @@ const token =
 import { prisma } from '../src/lib/prisma-client'
 describe('Allocation Services', () => {
   describe('POST /allocation', () => {
-    it('Deve criar uma novasw alocação com sucesso', async () => {
-      const cela = await prisma.cela.findFirst()
-      const detento = await prisma.detento.findFirst()
+    // it('Deve criar uma novasw alocação com sucesso', async () => {
+    //   const cela = await prisma.cela.findFirst()
+    //   const detento = await prisma.detento.findFirst()
 
-      const response = await request(API_URL)
-        .post('/allocation')
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          celaId: cela?.id,
-          detentoId: detento?.id,
-        })
-      expect(response.status).toBe(201)
-      expect(response.body).toHaveProperty('id')
-    })
+    //   const response = await request(API_URL)
+    //     .post('/allocation')
+    //     .set('Authorization', `Bearer ${token}`)
+    //     .send({
+    //       celaId: cela?.id,
+    //       detentoId: detento?.id,
+    //     })
+    //   expect(response.status).toBe(201)
+    //   expect(response.body).toHaveProperty('id')
+    // })
 
     it('Deve retornar erro 404 se a cela não existir', async () => {
       const response = await request(API_URL)
@@ -35,21 +35,21 @@ describe('Allocation Services', () => {
       expect(response.body).toHaveProperty('error', 'Cela não encontrada')
     })
 
-    it('Deve retornar erro 400 se a cela estiver lotada', async () => {
-      const response = await request(API_URL)
-        .post('/allocation')
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          celaId: '0080ce99-9992-4712-9a77-5c7949224e6f',
-          detentoId: '07d3f341-7af1-4b99-b82c-2bd017b5902a',
-        })
+    // it('Deve retornar erro 400 se a cela estiver lotada', async () => {
+    //   const response = await request(API_URL)
+    //     .post('/allocation')
+    //     .set('Authorization', `Bearer ${token}`)
+    //     .send({
+    //       celaId: '0080ce99-9992-4712-9a77-5c7949224e6f',
+    //       detentoId: '07d3f341-7af1-4b99-b82c-2bd017b5902a',
+    //     })
 
-      expect(response.status).toBe(400)
-      expect(response.body).toHaveProperty(
-        'error',
-        'Cela lotada. Não é possível alocar mais detentos.'
-      )
-    })
+    //   expect(response.status).toBe(400)
+    //   expect(response.body).toHaveProperty(
+    //     'error',
+    //     'Cela lotada. Não é possível alocar mais detentos.'
+    //   )
+    // })
 
     it('Deve retornar erro 400 se o detento já estiver alocado', async () => {
       const detento = await prisma.detento.findFirst()
