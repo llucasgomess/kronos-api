@@ -20,7 +20,7 @@ export const createUserService = async (
       .number()
       .int()
       .min(0, 'Nível de permissão deve ser um número inteiro positivo'),
-    senha: z.string().min(6, 'Senha deve ter no mínimo 6 caracteres'),
+    senha: z.string().min(8, 'Senha deve ter no mínimo 8 caracteres'),
   })
 
   const { nome, cpf, cargo, nivelPermissao, senha } = schemaBody.parse(req.body)
@@ -29,7 +29,9 @@ export const createUserService = async (
   const existingUser = await getUserByIdModel(cpf)
 
   if (existingUser) {
-    return { success: false, message: 'CPF ou Login já cadastrados!' }
+    return res
+      .status(409)
+      .send({ success: false, message: 'CPF ou Login já cadastrados!' })
   }
 
   // Criptografar a senha
