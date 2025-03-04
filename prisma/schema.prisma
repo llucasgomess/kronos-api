@@ -104,8 +104,8 @@ model Advogado {
 model Usuario {
   id             String @id @default(uuid())
   nome           String
+  cpf            String @unique
   cargo          String // Inspetor, Administrador
   nivelPermissao Int
-  login          String @unique
   senha          String
 }

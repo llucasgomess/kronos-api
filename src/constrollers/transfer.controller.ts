@@ -1,19 +1,31 @@
 import { FastifyInstance } from 'fastify'
+import { permission } from '../middlewares/permission.middleware'
 import {
   createTransferPrisonerService,
   deleteTransferPrisonerService,
   getAllTransferPrisonerService,
   updateTransferPrisonerService,
 } from '../services/transfer.service'
-import { validations } from '../validations/transfer'
 
 export default async function transferController(server: FastifyInstance) {
-  server.post('/', validations.transfer.create, createTransferPrisonerService),
-    server.get('/', validations.transfer.getAll, getAllTransferPrisonerService),
+  server.post(
+    '/',
+    { preHandler: permission(['ADM', 'INSP']) },
+    createTransferPrisonerService
+  ),
+    server.get(
+      '/',
+      { preHandler: permission(['ADM', 'INSP']) },
+      getAllTransferPrisonerService
+    ),
     server.delete(
       '/:id',
-      validations.transfer.delete,
+      { preHandler: permission(['ADM']) },
       deleteTransferPrisonerService
     )
-  server.put('/:id', validations.transfer.update, updateTransferPrisonerService)
+  server.put(
+    '/:id',
+    { preHandler: permission(['ADM']) },
+    updateTransferPrisonerService
+  )
 }

@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify'
+import { permission } from '../middlewares/permission.middleware'
 import {
   createVisitService,
   deleteVisitService,
@@ -6,12 +7,31 @@ import {
   getByIdVisitService,
   updateVisitService,
 } from '../services/visit.service'
-import { validations } from '../validations/visit'
 
 export default async function visitController(server: FastifyInstance) {
-  server.post('/', validations.visit.create, createVisitService),
-    server.get('/', validations.visit.getAll, getAllVisitService),
-    server.get('/:id', validations.visit.getById, getByIdVisitService),
-    server.delete('/:id', validations.visit.delete, deleteVisitService),
-    server.put('/:id', validations.visit.update, updateVisitService)
+  server.post(
+    '/',
+    { preHandler: permission(['ADM', 'INSP']) },
+    createVisitService
+  ),
+    server.get(
+      '/',
+      { preHandler: permission(['ADM', 'INSP']) },
+      getAllVisitService
+    ),
+    server.get(
+      '/:id',
+      { preHandler: permission(['ADM', 'INSP']) },
+      getByIdVisitService
+    ),
+    server.delete(
+      '/:id',
+      { preHandler: permission(['ADM']) },
+      deleteVisitService
+    ),
+    server.put(
+      '/:id',
+      { preHandler: permission(['ADM', 'INSP']) },
+      updateVisitService
+    )
 }

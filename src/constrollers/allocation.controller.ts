@@ -1,17 +1,25 @@
 import { FastifyInstance } from 'fastify'
+import { permission } from '../middlewares/permission.middleware'
 import {
   createAllocationService,
   deleteAllocationService,
   getAllAllocationService,
 } from '../services/allocation.service'
-import { validations } from '../validations/allocation'
 
 export default async function allocationController(server: FastifyInstance) {
-  server.post('/', validations.allocation.create, createAllocationService),
-    server.get('/', validations.allocation.getAll, getAllAllocationService),
+  server.post(
+    '/',
+    { preHandler: permission(['INSP', 'ADM']) },
+    createAllocationService
+  ),
+    server.get(
+      '/',
+      { preHandler: permission(['adm']) },
+      getAllAllocationService
+    ),
     server.delete(
       '/:id',
-      validations.allocation.delete,
+      { preHandler: permission(['adm']) },
       deleteAllocationService
     )
 }

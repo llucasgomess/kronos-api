@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
+import { permission } from '../middlewares/permission.middleware'
 import { createCellService } from '../services/cell.service'
-import { validations } from '../validations/cell'
 
 export default async function cellController(server: FastifyInstance) {
-  server.post('/', validations.cell.create, createCellService)
+  server.post('/', { preHandler: permission(['ADM']) }, createCellService)
 }

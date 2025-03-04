@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify'
+import { permission } from '../middlewares/permission.middleware'
 import {
   createAttorneyService,
   deleteAttorneyService,
@@ -6,12 +7,31 @@ import {
   getByIdAttorneyService,
   updateAttorneyService,
 } from '../services/attorney.service'
-import { validations } from '../validations/attorney'
 
 export default async function attorneyController(server: FastifyInstance) {
-  server.post('/', validations.attorney.create, createAttorneyService),
-    server.get('/', validations.attorney.getAll, getAllAttorneyService),
-    server.get('/:id', validations.attorney.getById, getByIdAttorneyService),
-    server.delete('/:id', validations.attorney.delete, deleteAttorneyService),
-    server.put('/:id', validations.attorney.update, updateAttorneyService)
+  server.post(
+    '/',
+    { preHandler: permission(['ADM', 'INSP']) },
+    createAttorneyService
+  ),
+    server.get(
+      '/',
+      { preHandler: permission(['ADM', 'INSP']) },
+      getAllAttorneyService
+    ),
+    server.get(
+      '/:id',
+      { preHandler: permission(['ADM', 'INSP']) },
+      getByIdAttorneyService
+    ),
+    server.delete(
+      '/:id',
+      { preHandler: permission(['ADM', 'INSP']) },
+      deleteAttorneyService
+    ),
+    server.put(
+      '/:id',
+      { preHandler: permission(['ADM', 'INSP']) },
+      updateAttorneyService
+    )
 }

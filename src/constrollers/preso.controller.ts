@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify'
+import { permission } from '../middlewares/permission.middleware'
 import {
   createPrisonerService,
   deletePrisonerService,
@@ -6,12 +7,27 @@ import {
   searchPrisonerService,
   updatePrisonerService,
 } from '../services/preso.service'
-import { validations } from '../validations/prisoner'
 
 export default async function prisonersController(server: FastifyInstance) {
-  server.post('/', validations.prisioner.create, createPrisonerService),
-    server.get('/', validations.prisioner.getAll, listPrisonerService),
-    server.put('/:id', validations.prisioner.update, updatePrisonerService),
-    server.get('/:id', validations.prisioner.getById, searchPrisonerService),
-    server.delete('/:id', validations.prisioner.delete, deletePrisonerService)
+  server.post('/', { preHandler: permission(['ADM']) }, createPrisonerService),
+    server.get(
+      '/',
+      { preHandler: [permission(['ADM', 'INSP'])] },
+      listPrisonerService
+    ),
+    server.put(
+      '/:id',
+      { preHandler: permission(['ADM']) },
+      updatePrisonerService
+    ),
+    server.get(
+      '/:id',
+      { preHandler: permission(['ADM', 'INSP']) },
+      searchPrisonerService
+    ),
+    server.delete(
+      '/:id',
+      { preHandler: permission(['ADM']) },
+      deletePrisonerService
+    )
 }
