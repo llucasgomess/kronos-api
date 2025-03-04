@@ -22,6 +22,9 @@ export const getAllAllocationsModel = async () => {
 export const deleteAllocationsModel = async (id: string) => {
   return await prisma.alocacao.delete({ where: { id } })
 }
+export const getAllocationsByIdDetentoModel = async (detentoId: string) => {
+  return await prisma.alocacao.findFirst({ where: { detentoId } })
+}
 export const getAllocationsByIdModel = async (id: string) => {
-  return await prisma.alocacao.findUnique({ where: { id } })
+  return await prisma.alocacao.findFirst({ where: { id } })
 }
