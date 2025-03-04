@@ -59,7 +59,7 @@ export default async function allocationController(server: FastifyInstance) {
     server.get(
       '/',
       {
-        preHandler: permission(['adm']),
+        preHandler: permission(['ADM']),
         schema: {
           summary: 'Rota para buscar todos as alocações',
           tags: ['Alocações'],
@@ -73,7 +73,7 @@ export default async function allocationController(server: FastifyInstance) {
     server.delete(
       '/:id',
       {
-        preHandler: permission(['adm']),
+        preHandler: permission(['ADM']),
         schema: {
           summary: 'Rota para deletar o presidiario',
           tags: ['Alocações'],
