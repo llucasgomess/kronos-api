@@ -1,8 +1,8 @@
 import { prisma } from '../lib/prisma-client'
 
-export const getCellByIdwithAlocationsModel = async (id: string) => {
+export const getCellByIdwithAlocationsModel = async (celaId: string) => {
   return await prisma.cela.findUnique({
-    where: { id },
+    where: { id: celaId },
     include: { alocacoes: true },
   })
 }
@@ -25,5 +25,8 @@ export const getCellByIdModel = async (numero: number) => {
   return await prisma.cela.findUnique({ where: { numero } })
 }
 export const getCellByIdUUiModel = async (id: string) => {
-  return await prisma.cela.findUnique({ where: { id } })
+  return await prisma.cela.findUnique({
+    where: { id },
+    include: { alocacoes: true },
+  })
 }
