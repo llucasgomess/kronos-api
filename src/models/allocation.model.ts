@@ -1,4 +1,4 @@
-import { prisma } from '../lib/prisma-client.js'
+import { prisma } from '../lib/prisma-client'
 
 export const createAllocationsModel = async (
   detentoId: string,

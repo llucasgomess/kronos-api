@@ -1,4 +1,4 @@
-import { prisma } from '../lib/prisma-client.js'
+import { prisma } from '../lib/prisma-client'
 
 export const getCellByIdwithAlocationsModel = async (id: string) => {
   return await prisma.cela.findUnique({

@@ -1,5 +1,5 @@
 import { Detento } from '@prisma/client'
-import { prisma } from '../lib/prisma-client.js'
+import { prisma } from '../lib/prisma-client'
 
 interface newDetento {
   nome: string

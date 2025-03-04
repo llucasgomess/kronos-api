@@ -7,8 +7,8 @@ import {
   getAllPrisonerModel,
   getPrisonerByIdModel,
   updatePrisonerModel,
-} from '../models/preso.model.js'
-import { detentoBodySchema } from '../validations/prisoner.js'
+} from '../models/preso.model'
+import { detentoBodySchema } from '../validations/prisoner'
 
 type NewDetento = z.infer<typeof detentoBodySchema>
 
