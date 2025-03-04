@@ -19,7 +19,7 @@ export const loginService = async (req: FastifyRequest, res: FastifyReply) => {
     }
 
     const token = gerarToken(usuario?.id!, usuario?.cargo!)
-    res.send({ message: 'Login autenticado', token })
+    res.status(201).send({ message: 'Login autenticado', token })
   } catch (error) {
     console.error('Erro ao listar detentos:', error)
     return res.code(500).send({ error: 'Erro interno do servidor' })
