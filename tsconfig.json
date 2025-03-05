@@ -16,9 +16,10 @@
   },
   "include": [
     "src/**/*",
-    "prisma/seed.ts"
+    "prisma/**/*",
+    "docker-compose.yml"
   ],
    "exclude": [
-    "node_modules"
+    "node_modules","tests"
   ]
 }

@@ -38,6 +38,16 @@ server.register(fastifySwagger, {
       title: 'API Kronos',
       version: '0.0.1',
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT', // Especifica que é um JWT
+        },
+      },
+    },
+    security: [{ bearerAuth: [] }], // Aplica o esquema de segurança globalmente
   },
   transform: jsonSchemaTransform,
 })
