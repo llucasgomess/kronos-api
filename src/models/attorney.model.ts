@@ -14,6 +14,11 @@ export const getByIdAttorneyModel = async (id: string) => {
     include: { visitas: true },
   })
 }
+export const getByOabAttorneyModel = async (oabNumero: string) => {
+  return await prisma.advogado.findUnique({
+    where: { oabNumero },
+  })
+}
 export const updateAttorneyModel = async (
   id: string,
   nome: string,

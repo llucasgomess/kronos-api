@@ -24,9 +24,7 @@ export default async function attorneyController(server: FastifyInstance) {
         // params: detentoParamsSchema,
         response: {
           201: z.object({
-            id: z.string().uuid(),
-            nome: z.string(),
-            oabNumero: z.string(),
+            message: z.string(),
           }),
           500: z.object({ error: z.string() }),
         },
@@ -98,8 +96,8 @@ export default async function attorneyController(server: FastifyInstance) {
             id: z.string().uuid(),
           }),
           body: z.object({
-            nome: z.string().trim(),
-            oabNumero: z.string().trim(),
+            nome: z.string().trim().optional(),
+            oabNumero: z.string().trim().optional(),
           }),
           response: {
             200: z.object({ message: z.string() }),
