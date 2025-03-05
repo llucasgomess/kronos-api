@@ -7,7 +7,11 @@
     "dev": "tsx watch --env-file=.env  ./src/server.ts",
     "test": "jest ",
     "test:watch": "jest --watch",
-    "build": "tsup ./src"
+    "build": "tsup ./src",
+    "pseed": "prisma db seed",
+    "pm": "prisma migrate dev",
+    "pg": "prisma generate",
+    "ps": "prisma studio"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

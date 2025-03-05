@@ -88,9 +88,9 @@ CREATE TABLE "Advogado" (
 CREATE TABLE "Usuario" (
     "id" TEXT NOT NULL,
     "nome" TEXT NOT NULL,
+    "cpf" TEXT NOT NULL,
     "cargo" TEXT NOT NULL,
     "nivelPermissao" INTEGER NOT NULL,
-    "login" TEXT NOT NULL,
     "senha" TEXT NOT NULL,
 
     CONSTRAINT "Usuario_pkey" PRIMARY KEY ("id")
@@ -103,13 +103,10 @@ CREATE UNIQUE INDEX "Detento_cpf_key" ON "Detento"("cpf");
 CREATE UNIQUE INDEX "Cela_numero_key" ON "Cela"("numero");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Alocacao_detentoId_key" ON "Alocacao"("detentoId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Advogado_oabNumero_key" ON "Advogado"("oabNumero");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Usuario_login_key" ON "Usuario"("login");
+CREATE UNIQUE INDEX "Usuario_cpf_key" ON "Usuario"("cpf");
 
 -- AddForeignKey
 ALTER TABLE "Alocacao" ADD CONSTRAINT "Alocacao_detentoId_fkey" FOREIGN KEY ("detentoId") REFERENCES "Detento"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

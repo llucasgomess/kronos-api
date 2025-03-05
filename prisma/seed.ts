@@ -1,12 +1,28 @@
 import { faker } from '@faker-js/faker'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../src/lib/prisma-client'
 
-const prisma = new PrismaClient()
+async function seed() {
+  console.log('🧹 Limpando o banco de dados...')
 
-async function main() {
+  // Desabilitar verificações de chave estrangeira (opcional, dependendo do banco de dados)
+
+  // Deletar dados em todas as tabelas (ajustar a ordem se necessário, para evitar problemas de dependência)
+  await prisma.visita.deleteMany({})
+  await prisma.visitante.deleteMany({})
+  await prisma.alocacao.deleteMany({})
+  await prisma.detento.deleteMany({})
+  await prisma.advogado.deleteMany({})
+  await prisma.cela.deleteMany({})
+  await prisma.usuario.deleteMany({})
+
+  // Reabilitar verificações de chave estrangeira (opcional)
+
+  console.log('✅ Banco de dados limpo com sucesso!')
+
   console.log('🌱 Populando o banco de dados...')
 
   // Criar 10 celas com capacidade de 10 presos cada
+
   const celas = await Promise.all(
     Array.from({ length: 10 }).map((_, index) =>
       prisma.cela.create({
@@ -18,6 +34,7 @@ async function main() {
       })
     )
   )
+  console.log('🚔 Celas criadas no banco de dados...')
 
   // Criar 8 advogados
   const advogados = await Promise.all(
@@ -30,6 +47,7 @@ async function main() {
       })
     )
   )
+  console.log('🚔 Advogado adicionados ao banco de dados...')
 
   // Criar 35 detentos e alocá-los em celas
   const detentos = await Promise.all(
@@ -95,15 +113,31 @@ async function main() {
       return detento
     })
   )
+  console.log('🚔 Detentos adicionados ao banco de dados...')
 
-  console.log('✅ Seed finalizado com sucesso!')
+  await prisma.usuario.create({
+    data: {
+      nome: 'ADM CAXIAS',
+      cpf: '00000000001',
+      senha: '$2a$10$5OEdaTFbCo6XTwIpSLejheoJklsnbYSe0.P8dyv9nnLkC7IcbgZ9e',
+      cargo: 'ADM',
+      nivelPermissao: 10,
+    },
+  })
+  console.log('🚔 usuario ADM adicionado ao banco de dados...')
+
+  await prisma.usuario.create({
+    data: {
+      nome: 'INSPETOR MAROTO',
+      cpf: '00000000002',
+      senha: '$2a$10$LhizKpZ5PTjFJgzfeKf2Suf6sMh9sLpwgxevJCXEO8edNRVcLW5ci',
+      cargo: 'INSP',
+      nivelPermissao: 5,
+    },
+  })
+  console.log('🚔 usuario ADM adicionado ao banco de dados...')
 }
 
-main()
-  .catch((e) => {
-    console.error(e)
-    process.exit(1)
-  })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
+seed().then(() => {
+  console.log('✅ Seed finalizado com sucesso!')
+})
