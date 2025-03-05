@@ -78,8 +78,9 @@ server.register(authRoutes)
 server.listen(
   {
     port: 3000,
+    host: '0.0.0.0',
   },
-  () => {
-    console.log('Server runnig port 3000')
+  (err, address) => {
+    console.log(`Server runnig ${address}`)
   }
 )
