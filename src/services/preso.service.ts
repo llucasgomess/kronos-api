@@ -29,14 +29,15 @@ export const createPrisonerService = async (
   try {
     const presoExist = await getPrisonerByIdCPFModel(newDetento.data.cpf)
 
-    if (!presoExist) {
+    if (presoExist) {
       res.status(409).send({ error: 'Preso já se encontra no banco de dados' })
       return
     }
 
     const preso = await createPrisonerModel(newDetento.data)
 
-    res.status(201).send({ message: 'Preso cadastrado', preso })
+    res.status(201).send({ message: 'Preso cadastrado', detento: preso })
+    return
   } catch (error) {
     console.error('Erro ao criar detento:', error)
     return res.status(500).send({ error: 'Erro interno do servidor' })
