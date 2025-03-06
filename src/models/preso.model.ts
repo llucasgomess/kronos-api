@@ -51,6 +51,20 @@ export const getPrisonerByIdModel = async (
     },
   })
 }
+//Buscar um detento por ID
+export const getPrisonerByIdCPFModel = async (
+  cpf: string
+): Promise<Detento | null> => {
+  return await prisma.detento.findUnique({
+    where: { cpf },
+    include: {
+      alocacoes: true,
+      infracoes: true,
+      transferencias: true,
+      visitas: true,
+    },
+  })
+}
 
 //Atualizar um detento
 export const updatePrisonerModel = async (

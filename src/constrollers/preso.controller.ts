@@ -46,19 +46,25 @@ export default async function prisonersController(server: FastifyInstance) {
           201: z.object({
             message: z.string(),
             detento: z.object({
+              id: z.string().uuid(),
               nome: z.string().trim().min(5),
               idade: z.number().positive(),
               estadoCivil: z.string().trim(),
-              cpf: z
-                .string()
-                .min(11, 'CPF deve conter no mínimo 11 caracteres')
-                .max(14, 'CPF deve conter no mínimo 14 caracteres'), // Validação do CPF já foi feita no service
+              cpf: z.string(),
               filiacao: z.string().optional(),
               foto: z.string().optional(),
               reincidencia: z.boolean().optional(),
+              createdAt: z.date(),
+              updatedAt: z.date(),
             }), // Retorno esperado
           }),
           400: z.object({
+            error: z.string(),
+          }),
+          409: z.object({
+            error: z.string(),
+          }),
+          500: z.object({
             error: z.string(),
           }),
         },

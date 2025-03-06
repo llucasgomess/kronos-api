@@ -5,6 +5,7 @@ import {
   createPrisonerModel,
   deletePrisonerModel,
   getAllPrisonerModel,
+  getPrisonerByIdCPFModel,
   getPrisonerByIdModel,
   updatePrisonerModel,
 } from '../models/preso.model'
@@ -17,20 +18,28 @@ export const createPrisonerService = async (
   res: FastifyReply
 ) => {
   const newDetento = detentoBodySchema.safeParse(req.body) // Faz a validação com Zod
+
   if (!newDetento.success) {
-    return res.code(400).send({
+    return res.status(400).send({
       error: 'Dados inválidos',
       issues: newDetento.error.format(),
     })
   }
 
   try {
-    await createPrisonerModel(newDetento.data)
+    const presoExist = await getPrisonerByIdCPFModel(newDetento.data.cpf)
 
-    res.code(201).send(newDetento.data)
+    if (!presoExist) {
+      res.status(409).send({ error: 'Preso já se encontra no banco de dados' })
+      return
+    }
+
+    const preso = await createPrisonerModel(newDetento.data)
+
+    res.status(201).send({ message: 'Preso cadastrado', preso })
   } catch (error) {
     console.error('Erro ao criar detento:', error)
-    return res.code(500).send({ error: 'Erro interno do servidor' })
+    return res.status(500).send({ error: 'Erro interno do servidor' })
   }
 }
 
@@ -42,14 +51,14 @@ export const listPrisonerService = async (
     const list = await getAllPrisonerModel()
     if (list.length == 0) {
       res
-        .code(200)
+        .status(200)
         .send({ message: 'Nenhum Detento se encontra no banco de dados' })
       return
     }
-    res.code(200).send(list)
+    res.status(200).send(list)
   } catch (error) {
     console.error('Erro ao listar detentos:', error)
-    return res.code(500).send({ error: 'Erro interno do servidor' })
+    return res.status(500).send({ error: 'Erro interno do servidor' })
   }
 }
 
@@ -62,7 +71,7 @@ export const searchPrisonerService = async (
   })
   const { success, data, error } = validationParams.safeParse(req.params)
   if (!success) {
-    return res.code(400).send({
+    return res.status(400).send({
       error: 'Dados inválidos',
       issues: error.format(),
     })
@@ -73,15 +82,15 @@ export const searchPrisonerService = async (
 
     if (!detento) {
       res
-        .code(404)
+        .status(404)
         .send({ message: 'Não foi encontrado o Detento no banco de dados' })
       return
     }
 
-    res.code(200).send({ message: 'Detento encontrado', detento })
+    res.status(200).send({ message: 'Detento encontrado', detento })
   } catch (error) {
     console.error('Erro ao procurar por ID detento:', error)
-    return res.code(500).send({ error: 'Erro interno do servidor' })
+    return res.status(500).send({ error: 'Erro interno do servidor' })
   }
 }
 export const deletePrisonerService = async (
@@ -93,7 +102,7 @@ export const deletePrisonerService = async (
   })
   const { success, data, error } = validationParams.safeParse(req.params)
   if (!success) {
-    return res.code(400).send({
+    return res.status(400).send({
       error: 'Dados inválidos',
       issues: error.format(),
     })
@@ -104,17 +113,17 @@ export const deletePrisonerService = async (
 
     if (!detento) {
       res
-        .code(404)
+        .status(404)
         .send({ message: 'Não foi encontrado o Detento no banco de dados' })
       return
     }
 
     await deletePrisonerModel(data.id)
 
-    res.code(200).send({ message: 'Detento deletado' })
+    res.status(200).send({ message: 'Detento deletado' })
   } catch (error) {
     console.error('Erro ao deletar detento:', error)
-    return res.code(500).send({ error: 'Erro interno do servidor' })
+    return res.status(500).send({ error: 'Erro interno do servidor' })
   }
 }
 
@@ -161,10 +170,10 @@ export const updatePrisonerService = async (
     }
     const updDetento = await updatePrisonerModel(id, newDetento)
     res
-      .code(200)
+      .status(200)
       .send({ message: 'Detento atualizado com sucesso', updDetento })
   } catch (error) {
     console.error('Erro ao atulizar detento:', error)
-    return res.code(500).send({ error: 'Erro interno do servidor' })
+    return res.status(500).send({ error: 'Erro interno do servidor' })
   }
 }
