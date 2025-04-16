@@ -50,7 +50,7 @@ model Alocacao {
   celaId       String
   dataAlocacao DateTime @default(now())
 
-  detento Detento @relation(fields: [detentoId], references: [id])
+  detento Detento @relation(fields: [detentoId], references: [id], onDelete: Cascade)
   cela    Cela    @relation(fields: [celaId], references: [id])
 }
 
