@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -60,7 +54,7 @@ model Infracao {
   descricao    String
   dataInfracao DateTime @default(now())
 
-  detento Detento @relation(fields: [detentoId], references: [id])
+  detento Detento @relation(fields: [detentoId], references: [id], onDelete: Cascade)
 }
 
 model Transferencia {
@@ -70,7 +64,7 @@ model Transferencia {
   celaDestinoId     String
   dataTransferencia DateTime @default(now())
 
-  detento     Detento @relation(fields: [detentoId], references: [id])
+  detento     Detento @relation(fields: [detentoId], references: [id], onDelete: Cascade)
   celaOrigem  Cela    @relation("TransferenciaOrigem", fields: [celaOrigemId], references: [id])
   celaDestino Cela    @relation("TransferenciaDestino", fields: [celaDestinoId], references: [id])
 }
@@ -81,7 +75,7 @@ model Visita {
   visitanteId String
   dataVisita  DateTime @default(now())
 
-  detento    Detento   @relation(fields: [detentoId], references: [id])
+  detento    Detento   @relation(fields: [detentoId], references: [id], onDelete: Cascade)
   visitante  Visitante @relation(fields: [visitanteId], references: [id])
   Advogado   Advogado? @relation(fields: [advogadoId], references: [id])
   advogadoId String?
