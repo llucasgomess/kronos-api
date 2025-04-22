@@ -117,9 +117,10 @@ async function seed() {
 
   await prisma.usuario.create({
     data: {
-      nome: 'ADM CAXIAS',
+      nome: 'ADMINISTRADOR',
       cpf: '00000000001',
       senha: '$2a$10$5OEdaTFbCo6XTwIpSLejheoJklsnbYSe0.P8dyv9nnLkC7IcbgZ9e',
+      email:'adm@kronos.com.br',
       cargo: 'ADM',
       nivelPermissao: 10,
     },
@@ -130,6 +131,7 @@ async function seed() {
     data: {
       nome: 'INSPETOR MAROTO',
       cpf: '00000000002',
+      email:'insp@kronos.com.br',
       senha: '$2a$10$LhizKpZ5PTjFJgzfeKf2Suf6sMh9sLpwgxevJCXEO8edNRVcLW5ci',
       cargo: 'INSP',
       nivelPermissao: 5,
