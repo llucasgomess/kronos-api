@@ -99,7 +99,7 @@ model Usuario {
   id             String @id @default(uuid())
   nome           String
   cpf            String @unique
-  email          String @unique
+  email          String 
   cargo          String // Inspetor, Administrador
   nivelPermissao Int
   senha          String
