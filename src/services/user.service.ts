@@ -42,7 +42,7 @@ const nomeArray = nome.split(' ')
   const hashedPassword = await bcrypt.hash(senha, 10)
 
   // Criar o usuário
-  await createUserModel(nome, cpf, cargo,email, nivelPermissao, hashedPassword)
+  await createUserModel(nome, cpf, email,cargo, nivelPermissao, hashedPassword)
 
   res.status(201).send({
     success: true,
