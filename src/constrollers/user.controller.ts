@@ -42,7 +42,7 @@ export default async function userController(server: FastifyInstance) {
         response: {
           200: z.array(
             z.object({
-              id: z.number(),
+              id: z.string(),
               nome: z.string(),
               cpf: z.string(),
               cargo: z.enum(['ADM', 'INSP']),
