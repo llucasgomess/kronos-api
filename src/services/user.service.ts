@@ -36,7 +36,7 @@ export const createUserService = async (
 const nomeArray = nome.split(' ')
   const primeiroNome = nomeArray[0]
   const ultimoNome = nomeArray[nomeArray.length - 1]
-  const email = `${primeiroNome.toLowerCase().slice(0,1)}.${ultimoNome.toLowerCase()}@example.com` 
+  const email = `${primeiroNome.toLowerCase().slice(0,1)}.${ultimoNome.toLowerCase()}@kronos.com.br` 
 
   // Criptografar a senha
   const hashedPassword = await bcrypt.hash(senha, 10)
