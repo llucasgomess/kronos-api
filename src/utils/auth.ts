@@ -4,8 +4,8 @@ import jwt from 'jsonwebtoken'
 const SECRET_KEY = process.env.JWT_SECRET || 'chaveSuperSecreta'
 
 // Gerar token JWT
-export function gerarToken(id: string, cargo: string) {
-  return jwt.sign({ id, cargo }, SECRET_KEY, { expiresIn: '8h' })
+export function gerarToken(id: string, cargo: string, nome: string, email: string) {
+  return jwt.sign({ id, cargo,nome,email }, SECRET_KEY, { expiresIn: '8h' })
 }
 
 // Verificar senha

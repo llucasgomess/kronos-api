@@ -18,7 +18,7 @@ export const loginService = async (req: FastifyRequest, res: FastifyReply) => {
       res.status(401).send({ error: 'Credenciais inválidas' })
     }
 
-    const token = gerarToken(usuario?.id!, usuario?.cargo!)
+    const token = gerarToken(usuario?.id!, usuario?.cargo!,usuario?.nome,usuario?.email)
     res.status(201).send({ message: 'Login autenticado', token })
   } catch (error) {
     console.error('Erro ao listar detentos:', error)
