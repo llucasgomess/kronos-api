@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import z from 'zod'
-import { createUserModel, getUserByIdModel } from '../models/user.model'
+import { createUserModel, getAllUsersModel, getUserByIdModel } from '../models/user.model'
 
 // Função para registrar um novo usuário
 export const createUserService = async (
@@ -45,3 +45,20 @@ export const createUserService = async (
     message: 'Usuário criado com sucesso!',
   })
 }
+export const getAllUserService = async (
+  req: FastifyRequest,
+  res: FastifyReply )=>{
+      try {
+        const list = await getAllUsersModel()
+        if (list.length == 0) {
+          res
+            .status(200)
+            .send({ message: 'Nenhum Usuario se encontra no banco de dados' })
+          return
+        }
+        res.status(200).send(list)
+      } catch (error) {
+        console.error('Erro ao listar usuarios:', error)
+        return res.status(500).send({ error: 'Erro interno do servidor' })
+      }
+  }

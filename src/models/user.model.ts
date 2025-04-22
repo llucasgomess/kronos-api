@@ -28,3 +28,15 @@ export const createUserModel = async (
     },
   })
 }
+
+export const getAllUsersModel = async () => {
+  return await prisma.usuario.findMany({
+    select: {
+      id: true,
+      nome: true,
+      cpf: true,
+      cargo: true,
+      nivelPermissao: true,
+    },
+  })
+}
