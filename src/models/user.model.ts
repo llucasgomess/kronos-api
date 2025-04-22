@@ -14,6 +14,7 @@ export const getUserByIdModel = async (cpf: string) => {
 export const createUserModel = async (
   nome: string,
   cpf: string,
+  email: string,
   cargo: string,
   nivelPermissao: number,
   senha: string
@@ -21,6 +22,7 @@ export const createUserModel = async (
   return await prisma.usuario.create({
     data: {
       nome,
+      email,
       cpf,
       cargo,
       nivelPermissao,

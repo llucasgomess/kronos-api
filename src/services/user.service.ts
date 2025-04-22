@@ -33,12 +33,16 @@ export const createUserService = async (
       .status(409)
       .send({ success: false, message: 'CPF ou Login já cadastrados!' })
   }
+const nomeArray = nome.split(' ')
+  const primeiroNome = nomeArray[0]
+  const ultimoNome = nomeArray[nomeArray.length - 1]
+  const email = `${primeiroNome.toLowerCase().slice(0,1)}.${ultimoNome.toLowerCase()}@example.com` 
 
   // Criptografar a senha
   const hashedPassword = await bcrypt.hash(senha, 10)
 
   // Criar o usuário
-  await createUserModel(nome, cpf, cargo, nivelPermissao, hashedPassword)
+  await createUserModel(nome, cpf, cargo,email, nivelPermissao, hashedPassword)
 
   res.status(201).send({
     success: true,
