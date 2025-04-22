@@ -11,7 +11,8 @@
     "pseed": "prisma db seed",
     "pm": "prisma migrate dev",
     "pg": "prisma generate",
-    "ps": "prisma studio"
+    "ps": "prisma studio",
+    "reset": "sudo rm -r dist/ && pnpm build && pm2 start --interpreter node --name kronos-api dist/server.js "
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
