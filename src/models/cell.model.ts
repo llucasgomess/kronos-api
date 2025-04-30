@@ -7,6 +7,12 @@ export const getCellByIdwithAlocationsModel = async (celaId: string) => {
   })
 }
 
+export const getAllCellsModel = async () => {
+  return await prisma.cela.findMany({
+    include: { alocacoes: true },
+  })
+}
+
 export const createCellModel = async (
   numero: number,
   capacidade: number,

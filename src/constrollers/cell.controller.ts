@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import z from 'zod'
 import { permission } from '../middlewares/permission.middleware'
-import { createCellService } from '../services/cell.service'
+import { createCellService, getAllCellService } from '../services/cell.service'
 
 export default async function cellController(server: FastifyInstance) {
   server.post(
@@ -35,5 +35,6 @@ export default async function cellController(server: FastifyInstance) {
       },
     },
     createCellService
-  )
+  ),
+    server.get('/', {}, getAllCellService)
 }

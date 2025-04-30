@@ -1,6 +1,10 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { createCellModel, getCellByIdModel } from '../models/cell.model'
+import {
+  createCellModel,
+  getAllCellsModel,
+  getCellByIdModel,
+} from '../models/cell.model'
 
 export const createCellService = async (
   req: FastifyRequest,
@@ -25,6 +29,19 @@ export const createCellService = async (
     res.status(201).send(cela)
   } catch (error) {
     console.error('Erro ao criar cela:', error)
+    res.code(500).send({ error: 'Erro interno do servidor' })
+  }
+}
+
+export const getAllCellService = async (
+  req: FastifyRequest,
+  res: FastifyReply
+) => {
+  try {
+    const cells = await getAllCellsModel()
+    res.status(200).send(cells)
+  } catch (error) {
+    console.error('Erro ao buscar cela:', error)
     res.code(500).send({ error: 'Erro interno do servidor' })
   }
 }
