@@ -11,6 +11,7 @@ export const createVisitModel = async (
 export const getAllVisitModel = async () => {
   return await prisma.visitante.findMany()
 }
+
 export const getByIdVisitModel = async (id: string) => {
   return await prisma.visita.findUnique({
     where: { id },

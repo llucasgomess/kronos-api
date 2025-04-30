@@ -32,7 +32,8 @@ export const getAllVisitService = async (
   req: FastifyRequest,
   res: FastifyReply
 ) => {
-  const visitante = getAllVisitModel()
+  const visitante = await getAllVisitModel()
+  console.log(visitante)
   return res.send(visitante)
 }
 export const getByIdVisitService = async (
