@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import z from 'zod'
 import { prisma } from '../lib/prisma-client'
-import { getAllocationsByIdModel } from '../models/allocation.model'
+import { getAllocationsByIdDetentoModel } from '../models/allocation.model'
 import { getCellByIdUUiModel } from '../models/cell.model'
 import { getPrisonerByIdModel } from '../models/preso.model'
 import {
@@ -29,7 +29,7 @@ export const createTransferPrisonerService = async (
       return res.status(404).send({ message: 'Detento não encontrado' })
     }
 
-    const alocacao = await getAllocationsByIdModel(detentoId)
+    const alocacao = await getAllocationsByIdDetentoModel(detentoId)
 
     if (!alocacao) {
       return res.status(400).send({ message: 'Detento não está alocado' })
@@ -48,7 +48,10 @@ export const createTransferPrisonerService = async (
     return res
       .status(201)
       .send({ message: 'Transferência registrada com sucesso' })
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send({ error: 'Erro ao registrar transferência' })
+  }
 }
 export const getAllTransferPrisonerService = async (
   req: FastifyRequest,
@@ -56,11 +59,13 @@ export const getAllTransferPrisonerService = async (
 ) => {
   try {
     const tranferencias = await getAllTransferPrisonerModel()
+    // console.log(tranferencias)
 
-    return res
-      .status(200)
-      .send({ message: 'Transferência registrada com sucesso' })
-  } catch (error) {}
+    return res.status(200).send({ tranferencias })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send({ error: 'Erro ao buscar transferências' })
+  }
 }
 export const updateTransferPrisonerService = async (
   req: FastifyRequest,
