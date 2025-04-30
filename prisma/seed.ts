@@ -1,12 +1,15 @@
 import { faker } from '@faker-js/faker'
 import { prisma } from '../src/lib/prisma-client'
 
+function randomDateBetween(start: Date, end: Date): Date {
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  )
+}
+
 async function seed() {
   console.log('🧹 Limpando o banco de dados...')
 
-  // Desabilitar verificações de chave estrangeira (opcional, dependendo do banco de dados)
-
-  // Deletar dados em todas as tabelas (ajustar a ordem se necessário, para evitar problemas de dependência)
   await prisma.visita.deleteMany({})
   await prisma.visitante.deleteMany({})
   await prisma.alocacao.deleteMany({})
@@ -15,13 +18,8 @@ async function seed() {
   await prisma.cela.deleteMany({})
   await prisma.usuario.deleteMany({})
 
-  // Reabilitar verificações de chave estrangeira (opcional)
-
   console.log('✅ Banco de dados limpo com sucesso!')
-
   console.log('🌱 Populando o banco de dados...')
-
-  // Criar 10 celas com capacidade de 10 presos cada
 
   const celas = await Promise.all(
     Array.from({ length: 10 }).map((_, index) =>
@@ -36,7 +34,6 @@ async function seed() {
   )
   console.log('🚔 Celas criadas no banco de dados...')
 
-  // Criar 8 advogados
   const advogados = await Promise.all(
     Array.from({ length: 8 }).map(() =>
       prisma.advogado.create({
@@ -47,11 +44,15 @@ async function seed() {
       })
     )
   )
-  console.log('🚔 Advogado adicionados ao banco de dados...')
+  console.log('🚔 Advogados adicionados ao banco de dados...')
 
-  // Criar 35 detentos e alocá-los em celas
+  const startDate = new Date('2025-01-01')
+  const endDate = new Date()
+
   const detentos = await Promise.all(
-    Array.from({ length: 35 }).map(async () => {
+    Array.from({ length: 120 }).map(async () => {
+      const createdAt = randomDateBetween(startDate, endDate)
+
       const detento = await prisma.detento.create({
         data: {
           nome: faker.person.fullName(),
@@ -65,10 +66,10 @@ async function seed() {
           ]),
           foto: faker.image.avatar(),
           reincidencia: faker.datatype.boolean(),
+          createdAt,
         },
       })
 
-      // Atribuir o detento a uma cela aleatória
       await prisma.alocacao.create({
         data: {
           detentoId: detento.id,
@@ -94,33 +95,41 @@ async function seed() {
         )
       )
 
-      // Criar visitas associadas ao detento
-      await Promise.all(
-        visitantes.map((visitante) =>
-          prisma.visita.create({
-            data: {
-              detentoId: detento.id,
-              visitanteId: visitante.id,
-              advogadoId: faker.helpers.maybe(
-                () => faker.helpers.arrayElement(advogados).id
-              ), // Algumas visitas podem ter advogados
-              dataVisita: faker.date.recent(),
-            },
-          })
-        )
-      )
-
-      return detento
+      return { detento, visitantes }
     })
   )
+
   console.log('🚔 Detentos adicionados ao banco de dados...')
+
+  const visitaStart = new Date('2025-01-01')
+  const visitaEnd = new Date('2025-04-30')
+
+  // Criar 180 visitas no total, aleatoriamente distribuídas entre os detentos existentes
+  for (let i = 0; i < 180; i++) {
+    const { detento, visitantes } = faker.helpers.arrayElement(detentos)
+    const visitante = faker.helpers.arrayElement(visitantes)
+    const advogado = faker.helpers.maybe(
+      () => faker.helpers.arrayElement(advogados).id
+    )
+
+    await prisma.visita.create({
+      data: {
+        detentoId: detento.id,
+        visitanteId: visitante.id,
+        advogadoId: advogado,
+        dataVisita: randomDateBetween(visitaStart, visitaEnd),
+      },
+    })
+  }
+
+  console.log('🚔 Visitas adicionadas ao banco de dados...')
 
   await prisma.usuario.create({
     data: {
       nome: 'ADMINISTRADOR',
       cpf: '00000000001',
       senha: '$2a$10$5OEdaTFbCo6XTwIpSLejheoJklsnbYSe0.P8dyv9nnLkC7IcbgZ9e',
-      email:'adm@kronos.com.br',
+      email: 'adm@kronos.com.br',
       cargo: 'ADM',
       nivelPermissao: 10,
     },
@@ -131,13 +140,13 @@ async function seed() {
     data: {
       nome: 'INSPETOR MAROTO',
       cpf: '00000000002',
-      email:'insp@kronos.com.br',
+      email: 'insp@kronos.com.br',
       senha: '$2a$10$LhizKpZ5PTjFJgzfeKf2Suf6sMh9sLpwgxevJCXEO8edNRVcLW5ci',
       cargo: 'INSP',
       nivelPermissao: 5,
     },
   })
-  console.log('🚔 usuario ADM adicionado ao banco de dados...')
+  console.log('🚔 usuario INSPETOR adicionado ao banco de dados...')
 }
 
 seed().then(() => {

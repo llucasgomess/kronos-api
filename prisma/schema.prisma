@@ -71,13 +71,13 @@ model Transferencia {
 
 model Visita {
   id          String   @id @default(uuid())
-  detentoId   String
-  visitanteId String
+  detentoId   String?
+  visitanteId String?
   dataVisita  DateTime @default(now())
 
-  detento    Detento   @relation(fields: [detentoId], references: [id], onDelete: Cascade)
-  visitante  Visitante @relation(fields: [visitanteId], references: [id])
-  Advogado   Advogado? @relation(fields: [advogadoId], references: [id])
+  detento    Detento?   @relation(fields: [detentoId], references: [id], onDelete: Cascade)
+  visitante  Visitante? @relation(fields: [visitanteId], references: [id])
+  Advogado   Advogado?  @relation(fields: [advogadoId], references: [id])
   advogadoId String?
 }
 
@@ -99,7 +99,7 @@ model Usuario {
   id             String @id @default(uuid())
   nome           String
   cpf            String @unique
-  email          String 
+  email          String
   cargo          String // Inspetor, Administrador
   nivelPermissao Int
   senha          String
