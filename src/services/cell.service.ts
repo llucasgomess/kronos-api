@@ -4,7 +4,9 @@ import {
   createCellModel,
   getAllCellsModel,
   getCellByIdModel,
+  getCellByIdUUiModel,
 } from '../models/cell.model'
+import { getPrisonerByIdModel } from './../models/preso.model'
 
 export const createCellService = async (
   req: FastifyRequest,
@@ -40,6 +42,62 @@ export const getAllCellService = async (
   try {
     const cells = await getAllCellsModel()
     res.status(200).send(cells)
+  } catch (error) {
+    console.error('Erro ao buscar cela:', error)
+    res.code(500).send({ error: 'Erro interno do servidor' })
+  }
+}
+
+export const getCellByIdService = async (
+  req: FastifyRequest,
+  res: FastifyReply
+) => {
+  const validationParams = z.object({
+    id: z.string().uuid(),
+  })
+  const parsedParams = validationParams.safeParse(req.params)
+  if (!parsedParams.success) {
+    res.status(400).send({ message: 'ID inválido' })
+    return
+  }
+
+  const { id } = parsedParams.data
+  try {
+    const celaExistente = await getCellByIdUUiModel(id)
+    return res.status(200).send(celaExistente?.alocacoes)
+  } catch (error) {
+    console.error('Erro ao buscar cela:', error)
+    res.code(500).send({ error: 'Erro interno do servidor' })
+  }
+
+  return
+}
+
+//ira burcar todos os prisioneiros alocados na cela
+export const getCellByIdAllPrisionersService = async (
+  req: FastifyRequest,
+  res: FastifyReply
+) => {
+  const validationParams = z.object({
+    id: z.string().uuid(),
+  })
+  const parsedParams = validationParams.safeParse(req.params)
+  if (!parsedParams.success) {
+    res.status(400).send({ message: 'ID inválido' })
+    return
+  }
+
+  const { id } = parsedParams.data
+  try {
+    const celaExistente = await getCellByIdUUiModel(id)
+
+    const prisioneirosCela = await Promise.all(
+      celaExistente?.alocacoes.map(async (prisioner) => {
+        return await getPrisonerByIdModel(prisioner.detentoId)
+      }) || []
+    )
+
+    return res.status(200).send(prisioneirosCela)
   } catch (error) {
     console.error('Erro ao buscar cela:', error)
     res.code(500).send({ error: 'Erro interno do servidor' })

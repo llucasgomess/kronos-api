@@ -1,7 +1,11 @@
 import { FastifyInstance } from 'fastify'
 import z from 'zod'
 import { permission } from '../middlewares/permission.middleware'
-import { createCellService, getAllCellService } from '../services/cell.service'
+import {
+  createCellService,
+  getAllCellService,
+  getCellByIdAllPrisionersService,
+} from '../services/cell.service'
 
 export default async function cellController(server: FastifyInstance) {
   server.post(
@@ -36,5 +40,26 @@ export default async function cellController(server: FastifyInstance) {
     },
     createCellService
   ),
-    server.get('/', {}, getAllCellService)
+    server.get(
+      '/',
+      {
+        preHandler: permission(['ADM', 'INSP']),
+        schema: {
+          summary: 'Rota buscar todas as celas',
+          tags: ['Celas'],
+        },
+      },
+      getAllCellService
+    ),
+    server.get(
+      '/:id',
+      {
+        preHandler: permission(['ADM', 'INSP']),
+        schema: {
+          summary: 'Rota buscar todos os presos da cela',
+          tags: ['Celas'],
+        },
+      },
+      getCellByIdAllPrisionersService
+    )
 }
