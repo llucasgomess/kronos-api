@@ -23,8 +23,9 @@ model Detento {
   transferencias Transferencia[]
   visitas        Visita[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt()
+  Visitante Visitante[]
 }
 
 model Cela {
@@ -76,15 +77,18 @@ model Visita {
   dataVisita  DateTime @default(now())
 
   detento    Detento?   @relation(fields: [detentoId], references: [id], onDelete: Cascade)
-  visitante  Visitante? @relation(fields: [visitanteId], references: [id])
-  Advogado   Advogado?  @relation(fields: [advogadoId], references: [id])
+  visitante  Visitante? @relation(fields: [visitanteId], references: [id], onDelete: Cascade)
+  Advogado   Advogado?  @relation(fields: [advogadoId], references: [id], onDelete: Cascade)
   advogadoId String?
 }
 
 model Visitante {
   id             String   @id @default(uuid())
   nome           String
+  cpf            String   @unique
   grauParentesco String?
+  detentoId      String
+  detento        Detento  @relation(fields: [detentoId], references: [id], onDelete: Cascade)
   visitas        Visita[]
 }
 

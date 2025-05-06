@@ -83,6 +83,8 @@ async function seed() {
           prisma.visitante.create({
             data: {
               nome: faker.person.fullName(),
+              cpf: faker.string.numeric(11),
+              detentoId: detento.id,
               grauParentesco: faker.helpers.arrayElement([
                 'Mãe',
                 'Pai',

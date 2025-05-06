@@ -56,11 +56,6 @@ export default async function visitController(server: FastifyInstance) {
             id: z.string().uuid(),
           }),
           response: {
-            201: z.object({
-              id: z.string().uuid(),
-              nome: z.string(),
-              grauParentesco: z.string(),
-            }),
             500: z.object({ error: z.string() }),
           },
         },
