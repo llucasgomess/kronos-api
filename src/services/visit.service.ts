@@ -4,6 +4,7 @@ import {
   createVisitModel,
   deleteVisitModel,
   getAllVisitModel,
+  getByCPFVisitModel,
   getByIdVisitModel,
   updateVisitModel,
 } from '../models/visit.model'
@@ -22,17 +23,23 @@ export const createVisitService = async (
   const { nome, grauParentesco, cpf, idDetento } = shemaBody.parse(req.body)
 
   try {
-    const visitante = await createVisitModel(
-      nome,
-      cpf,
-      idDetento,
-      grauParentesco
-    )
+    const visitantaExists = await getByCPFVisitModel(cpf)
 
-    return res.status(201).send(visitante)
+    if (visitantaExists) {
+      return res
+        .status(400)
+        .send({ error: true, message: 'Visitante já cadastrado' })
+    }
+
+    await createVisitModel(nome, cpf, idDetento, grauParentesco)
+
+    res
+      .status(201)
+      .send({ error: false, message: 'Visitante criado com sucesso' })
+    return
   } catch (error) {
     console.error('Erro ao listar detentos:', error)
-    return res.code(500).send({ error: 'Erro interno do servidor' })
+    return res.status(500).send({ error: 'Erro interno do servidor' })
   }
 }
 export const getAllVisitService = async (
@@ -55,7 +62,7 @@ export const getByIdVisitService = async (
 
   const visitante = await getByIdVisitModel(id)
 
-  res.status(200).send(visitante)
+  return res.status(200).send(visitante)
 }
 export const updateVisitService = async (
   req: FastifyRequest,

@@ -26,11 +26,8 @@ export default async function visitController(server: FastifyInstance) {
         // params: detentoParamsSchema,
         response: {
           201: z.object({
-            id: z.string().uuid(),
-            nome: z.string(),
-            cpf: z.string(),
-            grauParentesco: z.string(),
-            idDetento: z.string().uuid(),
+            error: z.boolean(),
+            message: z.string(),
           }),
           500: z.object({ error: z.string() }),
         },

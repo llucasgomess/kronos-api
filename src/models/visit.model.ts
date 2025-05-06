@@ -27,6 +27,13 @@ export const getByIdVisitModel = async (id: string) => {
     include: { detento: true },
   })
 }
+
+export const getByCPFVisitModel = async (cpf: string) => {
+  return await prisma.visitante.findUnique({
+    where: { cpf },
+  })
+}
+
 export const updateVisitModel = async (
   id: string,
   nome: string,
