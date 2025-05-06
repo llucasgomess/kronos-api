@@ -3,13 +3,14 @@ import { prisma } from '../lib/prisma-client'
 export const createVisitModel = async (
   nome: string,
   cpf: string,
+  idDetento: string,
   grauParentesco: string
 ) => {
   return await prisma.visitante.create({
     data: {
       nome,
       cpf,
-      detento: { connect: { id: '1' } },
+      detento: { connect: { id: idDetento } },
       grauParentesco,
     },
   })

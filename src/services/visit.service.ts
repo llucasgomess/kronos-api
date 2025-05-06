@@ -15,13 +15,19 @@ export const createVisitService = async (
   const shemaBody = z.object({
     nome: z.string().trim(),
     cpf: z.string().trim(),
+    idDetento: z.string().uuid(),
     grauParentesco: z.string().trim(),
   })
 
-  const { nome, grauParentesco, cpf } = shemaBody.parse(req.body)
+  const { nome, grauParentesco, cpf, idDetento } = shemaBody.parse(req.body)
 
   try {
-    const visitante = await createVisitModel(nome, cpf, grauParentesco)
+    const visitante = await createVisitModel(
+      nome,
+      cpf,
+      idDetento,
+      grauParentesco
+    )
 
     return res.status(201).send(visitante)
   } catch (error) {
@@ -34,7 +40,7 @@ export const getAllVisitService = async (
   res: FastifyReply
 ) => {
   const visitante = await getAllVisitModel()
-  console.log(visitante)
+
   return res.send(visitante)
 }
 export const getByIdVisitService = async (
@@ -46,10 +52,9 @@ export const getByIdVisitService = async (
   })
 
   const { id } = schemaParams.parse(req.params)
-  console.log('ID==>', id)
 
   const visitante = await getByIdVisitModel(id)
-  console.log('VISITANTE==>', visitante)
+
   res.status(200).send(visitante)
 }
 export const updateVisitService = async (
