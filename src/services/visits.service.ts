@@ -15,13 +15,17 @@ export const createVisitsService = async (
     detentoId: z.string().uuid(),
     visitanteId: z.string().uuid(),
     advogadoId: z.string().uuid(),
-    dataVisita: z.date(),
   })
-  const { detentoId, visitanteId, advogadoId, dataVisita } =
-    validationBody.parse(req.body)
 
-  await createVisitsModel(detentoId, visitanteId, advogadoId, dataVisita)
+  const resp = validationBody.parse(req.body)
 
+  const data = {
+    ...resp,
+    dataVisita: new Date(),
+  }
+
+  const response = await createVisitsModel(data)
+  console.log(response)
   return res.status(201).send({ message: 'Visita registrada com sucesso' })
 }
 
@@ -44,7 +48,7 @@ export const updateVisitsService = async (
   res: FastifyReply
 ) => {
   const validationBody = z.object({
-    dataVisita: z.date(),
+    dataVisita: z.coerce.date(),
   })
   const validationParams = z.object({
     id: z.string().uuid(),

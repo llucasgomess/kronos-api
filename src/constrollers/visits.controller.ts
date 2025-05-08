@@ -19,19 +19,18 @@ export default async function visitsController(server: FastifyInstance) {
         body: z.object({
           detentoId: z.string().uuid(),
           visitanteId: z.string().uuid(),
-          advogadoId: z.string().uuid(),
-          dataVisita: z.date(),
+          advogadoId: z.string().uuid().optional(),
         }),
-        response: {
-          200: z.object({
-            id: z.string().uuid(),
-            celaId: z.string().uuid(),
-            detentoId: z.string().uuid(),
-            dataAlocacao: z.date(),
-          }),
-          201: z.object({ message: z.string() }),
-          500: z.object({ error: z.string() }),
-        },
+        // response: {
+        //   200: z.object({
+        //     id: z.string().uuid(),
+        //     celaId: z.string().uuid(),
+        //     detentoId: z.string().uuid(),
+        //     dataAlocacao: z.date(),
+        //   }),
+        //   201: z.object({ message: z.string() }),
+        //   500: z.object({ error: z.string() }),
+        // },
       },
     },
     createVisitsService
@@ -75,7 +74,7 @@ export default async function visitsController(server: FastifyInstance) {
           summary: 'Rota para atualizar registro de visitas',
           tags: ['Visitas'],
           body: z.object({
-            dataVisita: z.date(),
+            dataVisita: z.coerce.date(),
           }),
           params: z.object({
             id: z.string().uuid(),
