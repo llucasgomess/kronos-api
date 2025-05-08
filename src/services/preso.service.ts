@@ -163,6 +163,14 @@ export const updatePrisonerService = async (
   try {
     const detentoExiste = await getPrisonerByIdModel(id)
 
+    if (newDetento?.cpf) {
+      const detentoCpf = await getPrisonerByIdCPFModel(newDetento.cpf)
+      if (detentoCpf && detentoCpf.id !== id) {
+        res.status(409).send({ error: 'CPF já cadastrado' })
+        return
+      }
+    }
+
     if (!detentoExiste) {
       res
         .status(404)
