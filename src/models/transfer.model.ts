@@ -18,7 +18,7 @@ export const updateTransferPrisonerModel = async (
   celaDestinoId: string
 ) => {
   return await prisma.alocacao.update({
-    where: { detentoId },
+    where: { id: detentoId },
     data: { celaId: celaDestinoId },
   })
 }

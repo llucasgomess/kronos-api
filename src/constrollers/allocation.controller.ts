@@ -5,6 +5,7 @@ import {
   createAllocationService,
   deleteAllocationService,
   getAllAllocationService,
+  putAllocationService,
 } from '../services/allocation.service'
 
 const alocacaoSchema = z.array(
@@ -89,5 +90,25 @@ export default async function allocationController(server: FastifyInstance) {
         },
       },
       deleteAllocationService
+    ),
+    server.put(
+      '/:id',
+      {
+        preHandler: permission(['ADM']),
+        schema: {
+          summary: 'Rota para atualizar o alocação',
+          tags: ['Alocações'],
+          params: z.object({
+            id: z.string().uuid(),
+          }),
+          response: {
+            200: z.object({
+              message: z.string(),
+            }),
+            500: z.object({ error: z.string() }),
+          },
+        },
+      },
+      putAllocationService
     )
 }

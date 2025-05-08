@@ -37,10 +37,14 @@ export const getAllPrisonerModel = async (): Promise<Detento[]> => {
   return await prisma.detento.findMany()
 }
 
+type detententoProps = Detento & {
+  alocacoes?: Array<any> // Replace 'any' with the correct type if known
+}
+
 //Buscar um detento por ID
 export const getPrisonerByIdModel = async (
   detentoId: string
-): Promise<Detento | null> => {
+): Promise<detententoProps | null> => {
   return await prisma.detento.findUnique({
     where: { id: detentoId },
     include: {

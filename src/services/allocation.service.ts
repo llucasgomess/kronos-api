@@ -99,3 +99,29 @@ export const deleteAllocationService = async (
     return
   }
 }
+
+export const putAllocationService = async (
+  req: FastifyRequest,
+  res: FastifyReply
+) => {
+  const validationParams = z.object({
+    id: z.string().uuid(),
+  })
+
+  const { id } = validationParams.parse(req.params)
+
+  try {
+    const allocationExist = await getAllocationsByIdModel(id)
+
+    if (!allocationExist?.celaId) {
+      res.status(404).send({ error: 'Alocação não encontrada' })
+      return
+    }
+
+    res.status(200).send(allocationExist)
+  } catch (error) {
+    console.error('Erro ao listar alocação:', error)
+    res.status(500).send({ error: 'Erro interno do servidor' })
+    return
+  }
+}

@@ -1,7 +1,11 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import z from 'zod'
 import { prisma } from '../lib/prisma-client'
-import { getAllocationsByIdDetentoModel } from '../models/allocation.model'
+import {
+  createAllocationsModel,
+  deleteAllocationsModel,
+  getAllocationsByIdDetentoModel,
+} from '../models/allocation.model'
 import { getCellByIdUUiModel } from '../models/cell.model'
 import { getPrisonerByIdModel } from '../models/preso.model'
 import {
@@ -25,25 +29,47 @@ export const createTransferPrisonerService = async (
   try {
     const detento = await getPrisonerByIdModel(detentoId)
 
+    //1º verificar se o detento existe
     if (!detento) {
       return res.status(404).send({ message: 'Detento não encontrado' })
     }
 
     const alocacao = await getAllocationsByIdDetentoModel(detentoId)
 
+    //2º verificar se o detento está alocado em alguma cela
     if (!alocacao) {
-      return res.status(400).send({ message: 'Detento não está alocado' })
+      return res
+        .status(400)
+        .send({ message: 'Detento não está alocado em nenhuma cela' })
     }
 
     const celaDestino = await getCellByIdUUiModel(celaDestinoId)
 
+    //3º verificar se a cela de destino existe
     if (!celaDestino) {
       return res.status(404).send({ message: 'Cela de destino não encontrada' })
     }
 
+    //4º verificar se a cela de destino é diferente da cela atual
+    if (celaDestinoId === alocacao.celaId) {
+      return res
+        .status(400)
+        .send({ message: 'Cela de destino não pode ser a mesma que a atual' })
+    }
+
+    if (detento.alocacoes && detento.alocacoes.length > 0) {
+      await deleteAllocationsModel(detento.alocacoes[0].id)
+    } else {
+      return res
+        .status(400)
+        .send({ message: 'Detento não possui alocações válidas' })
+    }
+
+    await createAllocationsModel(detento.id, celaDestinoId)
+
     await createTransferPrisonerModel(detentoId, alocacao.celaId, celaDestinoId)
 
-    await updateTransferPrisonerModel(detentoId, celaDestinoId)
+    // await updateTransferPrisonerModel(detentoId, celaDestinoId)
 
     return res
       .status(201)
