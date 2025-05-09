@@ -5,6 +5,7 @@ import {
   createCellService,
   getAllCellService,
   getCellByIdAllPrisionersService,
+  getCellInfoByIdService,
 } from '../services/cell.service'
 
 export default async function cellController(server: FastifyInstance) {
@@ -52,7 +53,7 @@ export default async function cellController(server: FastifyInstance) {
       getAllCellService
     ),
     server.get(
-      '/:id',
+      '/:id/presos',
       {
         preHandler: permission(['ADM', 'INSP']),
         schema: {
@@ -61,5 +62,16 @@ export default async function cellController(server: FastifyInstance) {
         },
       },
       getCellByIdAllPrisionersService
+    ),
+    server.get(
+      '/:id',
+      {
+        preHandler: permission(['ADM', 'INSP']),
+        schema: {
+          summary: 'Rota para buscar as informações da cela',
+          tags: ['Celas'],
+        },
+      },
+      getCellInfoByIdService
     )
 }

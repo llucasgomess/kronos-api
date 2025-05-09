@@ -4,6 +4,7 @@ import {
   createCellModel,
   getAllCellsModel,
   getCellByIdModel,
+  getCellByIdUUiInfoModel,
   getCellByIdUUiModel,
 } from '../models/cell.model'
 import { getPrisonerByIdModel } from './../models/preso.model'
@@ -98,6 +99,34 @@ export const getCellByIdAllPrisionersService = async (
     )
 
     return res.status(200).send(prisioneirosCela)
+  } catch (error) {
+    console.error('Erro ao buscar cela:', error)
+    res.code(500).send({ error: 'Erro interno do servidor' })
+  }
+}
+
+export const getCellInfoByIdService = async (
+  req: FastifyRequest,
+  res: FastifyReply
+) => {
+  const validationParams = z.object({
+    id: z.string().uuid(),
+  })
+  const parsedParams = validationParams.safeParse(req.params)
+  if (!parsedParams.success) {
+    res.status(400).send({ message: 'ID inválido' })
+    return
+  }
+
+  const { id } = parsedParams.data
+  try {
+    const celaExistente = await getCellByIdUUiInfoModel(id)
+
+    if (!celaExistente) {
+      return res.status(404).send({ message: 'Cela nao existe' })
+    }
+
+    return res.status(200).send(celaExistente)
   } catch (error) {
     console.error('Erro ao buscar cela:', error)
     res.code(500).send({ error: 'Erro interno do servidor' })
