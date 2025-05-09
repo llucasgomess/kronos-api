@@ -45,10 +45,13 @@ export default async function allocationController(server: FastifyInstance) {
         }),
         response: {
           201: z.object({
-            celaId: z.string(),
-            detentoId: z.string(),
-            id: z.string(),
-            dataAlocacao: z.date(),
+            message: z.string(),
+            alocacao: z.object({
+              id: z.string().uuid(),
+              detentoId: z.string().uuid(),
+              celaId: z.string().uuid(),
+              dataAlocacao: z.string().datetime(),
+            }),
           }),
           400: z.object({ error: z.string() }),
           404: z.object({ error: z.string() }),

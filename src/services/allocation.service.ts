@@ -48,9 +48,13 @@ export const createAllocationService = async (
 
     const alocacao = await createAllocationsModel(detentoId, celaId)
 
-    res
-      .status(201)
-      .send({ message: 'Detento jogado dentro da cela com sucesso', alocacao })
+    return res.status(201).send({
+      message: 'Detento jogado dentro da cela com sucesso',
+      alocacao: {
+        ...alocacao,
+        dataAlocacao: new Date(alocacao.dataAlocacao).toISOString(),
+      },
+    })
   } catch (error) {
     console.error('Erro ao criar alocação:', error)
     res.status(500).send({ error: 'Erro interno do servidor' })
