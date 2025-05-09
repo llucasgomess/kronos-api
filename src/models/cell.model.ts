@@ -34,6 +34,8 @@ export const getCellByIdModel = async (numero: number) => {
 export const getCellByIdUUiModel = async (id: string) => {
   return await prisma.cela.findUnique({
     where: { id },
-    include: { alocacoes: true },
+    include: {
+      alocacoes: true,
+    },
   })
 }

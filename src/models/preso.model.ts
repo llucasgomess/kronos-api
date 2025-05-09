@@ -1,4 +1,4 @@
-import { Detento } from '@prisma/client'
+import { Alocacao, Detento } from '@prisma/client'
 import { prisma } from '../lib/prisma-client'
 
 interface newDetento {
@@ -32,10 +32,20 @@ export const createPrisonerModel = async (
   })
 }
 
+type getAllPrisonerModelResponse = Array<
+  Detento & {
+    alocacoes: Alocacao[]
+  }
+>
 //Buscar todos os detentos
-export const getAllPrisonerModel = async (): Promise<Detento[]> => {
-  return await prisma.detento.findMany()
-}
+export const getAllPrisonerModel =
+  async (): Promise<getAllPrisonerModelResponse> => {
+    return await prisma.detento.findMany({
+      include: {
+        alocacoes: true,
+      },
+    })
+  }
 
 type detententoProps = Detento & {
   alocacoes?: Array<any> // Replace 'any' with the correct type if known
