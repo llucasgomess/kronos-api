@@ -1,7 +1,11 @@
 import bcrypt from 'bcryptjs'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import z from 'zod'
-import { createUserModel, getAllUsersModel, getUserByIdModel } from '../models/user.model'
+import {
+  createUserModel,
+  getAllUsersModel,
+  getUserByIdModel,
+} from '../models/user.model'
 
 // Função para registrar um novo usuário
 export const createUserService = async (
@@ -33,16 +37,18 @@ export const createUserService = async (
       .status(409)
       .send({ success: false, message: 'CPF ou Login já cadastrados!' })
   }
-const nomeArray = nome.split(' ')
+  const nomeArray = nome.split(' ')
   const primeiroNome = nomeArray[0]
   const ultimoNome = nomeArray[nomeArray.length - 1]
-  const email = `${primeiroNome.toLowerCase().slice(0,1)}.${ultimoNome.toLowerCase()}@kronos.com.br` 
+  const email = `${primeiroNome
+    .toLowerCase()
+    .slice(0, 1)}.${ultimoNome.toLowerCase()}@kronos.com.br`
 
   // Criptografar a senha
   const hashedPassword = await bcrypt.hash(senha, 10)
 
   // Criar o usuário
-  await createUserModel(nome, cpf, email,cargo, nivelPermissao, hashedPassword)
+  await createUserModel(nome, cpf, email, cargo, nivelPermissao, hashedPassword)
 
   res.status(201).send({
     success: true,
@@ -51,18 +57,19 @@ const nomeArray = nome.split(' ')
 }
 export const getAllUserService = async (
   req: FastifyRequest,
-  res: FastifyReply )=>{
-      try {
-        const list = await getAllUsersModel()
-        if (list.length == 0) {
-          res
-            .status(200)
-            .send({ message: 'Nenhum Usuario se encontra no banco de dados' })
-          return
-        }
-        res.status(200).send(list)
-      } catch (error) {
-        console.error('Erro ao listar usuarios:', error)
-        return res.status(500).send({ error: 'Erro interno do servidor' })
-      }
+  res: FastifyReply
+) => {
+  try {
+    const list = await getAllUsersModel()
+    if (list.length == 0) {
+      res
+        .status(200)
+        .send({ message: 'Nenhum Usuario se encontra no banco de dados' })
+      return
+    }
+    return res.status(200).send(list)
+  } catch (error) {
+    console.error('Erro ao listar usuarios:', error)
+    return res.status(500).send({ error: 'Erro interno do servidor' })
   }
+}

@@ -3,6 +3,14 @@ import z from 'zod'
 import { permission } from '../middlewares/permission.middleware'
 import { createUserService, getAllUserService } from '../services/user.service'
 
+const usuarioSchema = z.object({
+  id: z.string().uuid(),
+  nome: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
+  cpf: z.string().length(11, 'CPF deve conter exatamente 11 dígitos'),
+  cargo: z.enum(['ADM', 'INSP', 'DIR']), // você pode adicionar outros cargos aqui
+  nivelPermissao: z.number().int().min(1).max(10),
+})
+
 export default async function userController(server: FastifyInstance) {
   server.post(
     '/register',
@@ -32,27 +40,18 @@ export default async function userController(server: FastifyInstance) {
     },
     createUserService
   ),
-  server.get(
-    '/list',
-    {
-      preHandler: permission(['ADM','INSP']),
-      schema: {
-        summary: 'Rota para listar todos os usuarios',
-        tags: ['Usuario'],
-        response: {
-          200: z.array(
-            z.object({
-              id: z.string(),
-              nome: z.string(),
-              cpf: z.string(),
-              cargo: z.enum(['ADM', 'INSP']),
-              nivelPermissao: z.number(),
-            })
-          ),
+    server.get(
+      '/list',
+      {
+        preHandler: permission(['ADM', 'INSP']),
+        schema: {
+          summary: 'Rota para listar todos os usuarios',
+          tags: ['Usuario'],
+          response: {
+            200: z.array(usuarioSchema),
+          },
         },
       },
-    },
-    getAllUserService
-  )
-
+      getAllUserService
+    )
 }
