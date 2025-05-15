@@ -44,7 +44,7 @@ export default async function cellController(server: FastifyInstance) {
     server.get(
       '/',
       {
-        preHandler: permission(['ADM', 'INSP']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota buscar todas as celas',
           tags: ['Celas'],
@@ -55,7 +55,7 @@ export default async function cellController(server: FastifyInstance) {
     server.get(
       '/:id/presos',
       {
-        preHandler: permission(['ADM', 'INSP']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota buscar todos os presos da cela',
           tags: ['Celas'],
@@ -66,7 +66,7 @@ export default async function cellController(server: FastifyInstance) {
     server.get(
       '/:id',
       {
-        preHandler: permission(['ADM', 'INSP']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para buscar as informações da cela',
           tags: ['Celas'],

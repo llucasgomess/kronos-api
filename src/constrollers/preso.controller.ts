@@ -26,7 +26,7 @@ export default async function prisonersController(server: FastifyInstance) {
   server.post(
     '/',
     {
-      preHandler: permission(['ADM']),
+      preHandler: permission(['ADM', 'DIR', 'INSP']),
       schema: {
         summary: 'Rota para adicionar presidiario',
         tags: ['Presos'],
@@ -75,7 +75,7 @@ export default async function prisonersController(server: FastifyInstance) {
     server.get(
       '/',
       {
-        preHandler: [permission(['ADM', 'INSP'])],
+        preHandler: [permission(['ADM', 'DIR', 'INSP'])],
         schema: {
           summary: 'Rota para buscar todos os presidiario',
           tags: ['Presos'],
@@ -86,7 +86,7 @@ export default async function prisonersController(server: FastifyInstance) {
     server.put(
       '/:id',
       {
-        preHandler: permission(['ADM']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para atualizar os dados do presidiario',
           tags: ['Presos'],
@@ -106,7 +106,7 @@ export default async function prisonersController(server: FastifyInstance) {
     server.get(
       '/:id',
       {
-        preHandler: permission(['ADM', 'INSP']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para buscar deteteminado presidiario',
           tags: ['Presos'],
@@ -126,7 +126,7 @@ export default async function prisonersController(server: FastifyInstance) {
     server.delete(
       '/:id',
       {
-        preHandler: permission(['ADM']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para deletar o presidiario',
           tags: ['Presos'],

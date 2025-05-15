@@ -12,7 +12,7 @@ export default async function infringementController(server: FastifyInstance) {
   server.post(
     '/',
     {
-      preHandler: permission(['ADM', 'INSP']),
+      preHandler: permission(['ADM', 'DIR', 'INSP']),
       schema: {
         summary: 'Rota para criar infrações',
         tags: ['Infrações'],
@@ -38,7 +38,7 @@ export default async function infringementController(server: FastifyInstance) {
   server.get(
     '/',
     {
-      preHandler: permission(['ADM', 'INSP']),
+      preHandler: permission(['ADM', 'DIR', 'INSP']),
       schema: {
         summary: 'Rota para buscar todas as infrações',
         tags: ['Infrações'],
@@ -52,7 +52,7 @@ export default async function infringementController(server: FastifyInstance) {
   server.put(
     '/:id',
     {
-      preHandler: permission(['ADM', 'INSP']),
+      preHandler: permission(['ADM', 'DIR', 'INSP']),
       schema: {
         summary: 'Rota para atualizar a descrição da  infrações',
         tags: ['Infrações'],
@@ -80,7 +80,7 @@ export default async function infringementController(server: FastifyInstance) {
   server.delete(
     '/:id',
     {
-      preHandler: permission(['ADM', 'INSP']),
+      preHandler: permission(['ADM', 'DIR', 'INSP']),
       schema: {
         summary: 'Rota para deletar a infrações',
         tags: ['Infrações'],

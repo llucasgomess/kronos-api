@@ -35,7 +35,7 @@ export default async function allocationController(server: FastifyInstance) {
   server.post(
     '/',
     {
-      preHandler: permission(['INSP', 'ADM']),
+      preHandler: permission(['ADM', 'DIR', 'INSP']),
       schema: {
         summary: 'Rota para criar uma alocação',
         tags: ['Alocações'],
@@ -63,7 +63,7 @@ export default async function allocationController(server: FastifyInstance) {
     server.get(
       '/',
       {
-        preHandler: permission(['ADM']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para buscar todos as alocações',
           tags: ['Alocações'],
@@ -77,7 +77,7 @@ export default async function allocationController(server: FastifyInstance) {
     server.delete(
       '/:id',
       {
-        preHandler: permission(['ADM']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para deletar o presidiario',
           tags: ['Alocações'],
@@ -97,7 +97,7 @@ export default async function allocationController(server: FastifyInstance) {
     server.put(
       '/:id',
       {
-        preHandler: permission(['ADM']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para atualizar o alocação',
           tags: ['Alocações'],

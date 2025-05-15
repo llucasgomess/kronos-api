@@ -13,7 +13,7 @@ export default async function visitController(server: FastifyInstance) {
   server.post(
     '/',
     {
-      preHandler: permission(['ADM', 'INSP']),
+      preHandler: permission(['ADM', 'DIR', 'INSP']),
       schema: {
         summary: 'Rota para criar visitante',
         tags: ['Visitante'],
@@ -38,7 +38,7 @@ export default async function visitController(server: FastifyInstance) {
     server.get(
       '/',
       {
-        preHandler: permission(['ADM', 'INSP']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para buscar todos os visitantes',
           tags: ['Visitante'],
@@ -49,7 +49,7 @@ export default async function visitController(server: FastifyInstance) {
     server.get(
       '/:id',
       {
-        preHandler: permission(['ADM', 'INSP']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para buscar visitante por id',
           tags: ['Visitante'],
@@ -66,7 +66,7 @@ export default async function visitController(server: FastifyInstance) {
     server.delete(
       '/:id',
       {
-        preHandler: permission(['ADM']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para deletar o presidiario',
           tags: ['Visitante'],
@@ -86,7 +86,7 @@ export default async function visitController(server: FastifyInstance) {
     server.put(
       '/:id',
       {
-        preHandler: permission(['ADM', 'INSP']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para atualizar visitante',
           tags: ['Visitante'],

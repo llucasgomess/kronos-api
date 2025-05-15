@@ -12,7 +12,7 @@ export default async function visitsController(server: FastifyInstance) {
   server.post(
     '/',
     {
-      preHandler: permission(['ADM']),
+      preHandler: permission(['ADM', 'DIR', 'INSP']),
       schema: {
         summary: 'Rota para Registra Visitas',
         tags: ['Visitas'],
@@ -38,7 +38,7 @@ export default async function visitsController(server: FastifyInstance) {
     server.get(
       '/',
       {
-        preHandler: permission(['ADM']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para buscar todos os  Registros de Visitas',
           tags: ['Visitas'],
@@ -49,7 +49,7 @@ export default async function visitsController(server: FastifyInstance) {
     server.delete(
       '/:id',
       {
-        preHandler: permission(['ADM']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para deletar o Registro de Visitas',
           tags: ['Visitas'],
@@ -69,7 +69,7 @@ export default async function visitsController(server: FastifyInstance) {
     server.put(
       '/:id',
       {
-        preHandler: permission(['ADM']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para atualizar registro de visitas',
           tags: ['Visitas'],

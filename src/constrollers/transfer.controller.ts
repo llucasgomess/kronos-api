@@ -12,7 +12,7 @@ export default async function transferController(server: FastifyInstance) {
   server.post(
     '/',
     {
-      preHandler: permission(['ADM', 'INSP']),
+      preHandler: permission(['ADM', 'DIR', 'INSP']),
       schema: {
         summary: 'Rota para transferencia',
         tags: ['Transferências'],
@@ -33,7 +33,7 @@ export default async function transferController(server: FastifyInstance) {
     server.get(
       '/',
       {
-        preHandler: permission(['ADM', 'INSP']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para buscar todas as transferencias',
           tags: ['Transferências'],
@@ -48,7 +48,7 @@ export default async function transferController(server: FastifyInstance) {
     server.delete(
       '/:id',
       {
-        preHandler: permission(['ADM']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para deletar a Transferências',
           tags: ['Transferências'],
@@ -68,7 +68,7 @@ export default async function transferController(server: FastifyInstance) {
   server.put(
     '/:id',
     {
-      preHandler: permission(['ADM']),
+      preHandler: permission(['ADM', 'DIR', 'INSP']),
       schema: {
         summary: 'Rota para atualizar a transferencias',
         tags: ['Transferências'],

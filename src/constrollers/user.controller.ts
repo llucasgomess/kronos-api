@@ -15,14 +15,14 @@ export default async function userController(server: FastifyInstance) {
   server.post(
     '/register',
     {
-      preHandler: permission(['ADM']),
+      preHandler: permission(['ADM', 'DIR', 'INSP']),
       schema: {
         summary: 'Rota para criar uma usuario',
         tags: ['Usuario'],
         body: z.object({
           nome: z.string().min(5),
           cpf: z.string().trim(),
-          cargo: z.enum(['ADM', 'INSP']),
+          cargo: z.enum(['ADM', 'DIR', 'INSP']),
           nivelPermissao: z.number(),
           senha: z.string().min(8),
         }),
@@ -43,7 +43,7 @@ export default async function userController(server: FastifyInstance) {
     server.get(
       '/list',
       {
-        preHandler: permission(['ADM', 'INSP']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para listar todos os usuarios',
           tags: ['Usuario'],

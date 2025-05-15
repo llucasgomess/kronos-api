@@ -13,7 +13,7 @@ export default async function attorneyController(server: FastifyInstance) {
   server.post(
     '/',
     {
-      preHandler: permission(['ADM', 'INSP']),
+      preHandler: permission(['ADM', 'DIR', 'INSP']),
       schema: {
         summary: 'Rota para criar Advogado',
         tags: ['Advogado'],
@@ -35,7 +35,7 @@ export default async function attorneyController(server: FastifyInstance) {
     server.get(
       '/',
       {
-        preHandler: permission(['ADM', 'INSP']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para buscar todos os Advogado',
           tags: ['Advogado'],
@@ -46,7 +46,7 @@ export default async function attorneyController(server: FastifyInstance) {
     server.get(
       '/:id',
       {
-        preHandler: permission(['ADM', 'INSP']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para buscar Advogado por id',
           tags: ['Advogado'],
@@ -68,7 +68,7 @@ export default async function attorneyController(server: FastifyInstance) {
     server.delete(
       '/:id',
       {
-        preHandler: permission(['ADM', 'INSP']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para deletar o Advogado',
           tags: ['Advogado'],
@@ -88,7 +88,7 @@ export default async function attorneyController(server: FastifyInstance) {
     server.put(
       '/:id',
       {
-        preHandler: permission(['ADM', 'INSP']),
+        preHandler: permission(['ADM', 'DIR', 'INSP']),
         schema: {
           summary: 'Rota para atualizar Advogados',
           tags: ['Advogado'],
