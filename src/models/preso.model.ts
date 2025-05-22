@@ -1,4 +1,4 @@
-import { Alocacao, Detento } from '@prisma/client'
+import { Alocacao, Detento, Infracao } from '@prisma/client'
 import { prisma } from '../lib/prisma-client'
 
 interface newDetento {
@@ -35,6 +35,7 @@ export const createPrisonerModel = async (
 type getAllPrisonerModelResponse = Array<
   Detento & {
     alocacoes: Alocacao[]
+    infracoes: Infracao[]
   }
 >
 //Buscar todos os detentos
@@ -43,6 +44,7 @@ export const getAllPrisonerModel =
     return await prisma.detento.findMany({
       include: {
         alocacoes: true,
+        infracoes: true,
       },
     })
   }
