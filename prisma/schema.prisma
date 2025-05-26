@@ -76,10 +76,8 @@ model Visita {
   visitanteId String?
   dataVisita  DateTime @default(now())
 
-  detento    Detento?   @relation(fields: [detentoId], references: [id], onDelete: Cascade)
-  visitante  Visitante? @relation(fields: [visitanteId], references: [id], onDelete: Cascade)
-  Advogado   Advogado?  @relation(fields: [advogadoId], references: [id], onDelete: Cascade)
-  advogadoId String?
+  detento   Detento?   @relation(fields: [detentoId], references: [id], onDelete: Cascade)
+  visitante Visitante? @relation(fields: [visitanteId], references: [id], onDelete: Cascade)
 }
 
 model Visitante {
@@ -93,10 +91,9 @@ model Visitante {
 }
 
 model Advogado {
-  id        String   @id @default(uuid())
+  id        String @id @default(uuid())
   nome      String
-  oabNumero String   @unique
-  visitas   Visita[]
+  oabNumero String @unique
 }
 
 model Usuario {

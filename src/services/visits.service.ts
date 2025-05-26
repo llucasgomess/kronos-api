@@ -14,7 +14,6 @@ export const createVisitsService = async (
   const validationBody = z.object({
     detentoId: z.string().uuid(),
     visitanteId: z.string().uuid(),
-    advogadoId: z.string().uuid(),
   })
 
   const resp = validationBody.parse(req.body)

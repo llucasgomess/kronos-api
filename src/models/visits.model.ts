@@ -3,7 +3,6 @@ import { prisma } from '../lib/prisma-client'
 type createVisitsModelProps = {
   detentoId: string
   visitanteId: string
-  advogadoId: string
   dataVisita: Date
 }
 export const createVisitsModel = async (data: createVisitsModelProps) => {
