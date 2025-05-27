@@ -18,9 +18,12 @@ export const createVisitService = async (
     cpf: z.string().trim(),
     idDetento: z.string().uuid(),
     grauParentesco: z.string().trim(),
+    foto: z.string(),
   })
 
-  const { nome, grauParentesco, cpf, idDetento } = shemaBody.parse(req.body)
+  const { nome, grauParentesco, cpf, idDetento, foto } = shemaBody.parse(
+    req.body
+  )
 
   try {
     const visitantaExists = await getByCPFVisitModel(cpf)
@@ -31,7 +34,7 @@ export const createVisitService = async (
         .send({ error: true, message: 'Visitante já cadastrado' })
     }
 
-    await createVisitModel(nome, cpf, idDetento, grauParentesco)
+    await createVisitModel(nome, cpf, idDetento, grauParentesco, foto)
 
     res
       .status(201)
@@ -74,12 +77,13 @@ export const updateVisitService = async (
   const schemaBody = z.object({
     nome: z.string().trim(),
     grauParentesco: z.string().trim(),
+    foto: z.string(),
   })
 
   const { id } = schemaParams.parse(req.params)
-  const { nome, grauParentesco } = schemaBody.parse(req.body)
+  const { nome, grauParentesco, foto } = schemaBody.parse(req.body)
 
-  await updateVisitModel(id, nome, grauParentesco)
+  await updateVisitModel(id, nome, grauParentesco, foto)
   res.status(200).send({ message: 'Visitante atualizado com sucesso' })
 }
 export const deleteVisitService = async (

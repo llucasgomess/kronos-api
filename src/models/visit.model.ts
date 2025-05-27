@@ -4,7 +4,8 @@ export const createVisitModel = async (
   nome: string,
   cpf: string,
   idDetento: string,
-  grauParentesco: string
+  grauParentesco: string,
+  foto: string
 ) => {
   return await prisma.visitante.create({
     data: {
@@ -12,6 +13,7 @@ export const createVisitModel = async (
       cpf,
       detento: { connect: { id: idDetento } },
       grauParentesco,
+      foto,
     },
   })
 }
@@ -37,11 +39,12 @@ export const getByCPFVisitModel = async (cpf: string) => {
 export const updateVisitModel = async (
   id: string,
   nome: string,
-  grauParentesco: string
+  grauParentesco: string,
+  foto: string
 ) => {
   return await prisma.visitante.update({
     where: { id },
-    data: { nome, grauParentesco },
+    data: { nome, grauParentesco, foto },
   })
 }
 export const deleteVisitModel = async (id: string) => {

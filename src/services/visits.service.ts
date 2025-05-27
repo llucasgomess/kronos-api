@@ -36,7 +36,6 @@ export const getAllVisitsService = async (
     include: {
       detento: true,
       visitante: true,
-      Advogado: true,
     },
   })
   return res.send(visitas)
