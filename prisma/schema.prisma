@@ -71,10 +71,11 @@ model Transferencia {
 }
 
 model Visita {
-  id          String   @id @default(uuid())
-  detentoId   String?
-  visitanteId String?
-  dataVisita  DateTime @default(now())
+  id            String    @id @default(uuid())
+  detentoId     String?
+  visitanteId   String?
+  dataVisita    DateTime  @default(now())
+  dataVisitaFim DateTime? // Data e hora de término da visita
 
   detento   Detento?   @relation(fields: [detentoId], references: [id], onDelete: Cascade)
   visitante Visitante? @relation(fields: [visitanteId], references: [id], onDelete: Cascade)
@@ -84,6 +85,7 @@ model Visitante {
   id             String   @id @default(uuid())
   nome           String
   cpf            String   @unique
+  foto           String? // URL da foto do detento
   grauParentesco String?
   detentoId      String
   detento        Detento  @relation(fields: [detentoId], references: [id], onDelete: Cascade)
