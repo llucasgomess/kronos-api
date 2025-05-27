@@ -22,6 +22,7 @@ export default async function visitController(server: FastifyInstance) {
           cpf: z.string().trim(),
           idDetento: z.string().uuid(),
           grauParentesco: z.string().trim(),
+          foto: z.string(),
         }),
         // params: detentoParamsSchema,
         response: {

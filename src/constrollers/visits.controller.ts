@@ -19,7 +19,6 @@ export default async function visitsController(server: FastifyInstance) {
         body: z.object({
           detentoId: z.string().uuid(),
           visitanteId: z.string().uuid(),
-          advogadoId: z.string().uuid().optional(),
         }),
         // response: {
         //   200: z.object({
@@ -84,7 +83,6 @@ export default async function visitsController(server: FastifyInstance) {
               detentoId: z.string().uuid(),
               id: z.string().uuid(),
               visitanteId: z.string().uuid(),
-              advogadoId: z.string().uuid(),
               dataVisita: z.date(),
             }),
             500: z.object({ error: z.string() }),
