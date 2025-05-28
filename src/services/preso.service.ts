@@ -166,7 +166,7 @@ export const updatePrisonerService = async (
     if (newDetento?.cpf) {
       const detentoCpf = await getPrisonerByIdCPFModel(newDetento.cpf)
       if (detentoCpf && detentoCpf.id !== id) {
-        res.status(409).send({ error: 'CPF já cadastrado' })
+        res.status(409).send({ error: true, message: 'CPF já cadastrado' })
         return
       }
     }
@@ -177,6 +177,7 @@ export const updatePrisonerService = async (
         .send({ message: 'Detento nao encontrado no banco de dados' })
       return
     }
+
     const updDetento = await updatePrisonerModel(id, newDetento)
     res
       .status(200)

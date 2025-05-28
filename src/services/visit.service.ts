@@ -29,9 +29,8 @@ export const createVisitService = async (
     const visitantaExists = await getByCPFVisitModel(cpf)
 
     if (visitantaExists) {
-      return res
-        .status(400)
-        .send({ error: true, message: 'Visitante já cadastrado' })
+      res.status(409).send({ error: true, message: 'CPF já cadastrado' })
+      return
     }
 
     await createVisitModel(nome, cpf, idDetento, grauParentesco, foto)
@@ -86,6 +85,7 @@ export const updateVisitService = async (
   await updateVisitModel(id, nome, grauParentesco, foto)
   res.status(200).send({ message: 'Visitante atualizado com sucesso' })
 }
+
 export const deleteVisitService = async (
   req: FastifyRequest,
   res: FastifyReply
