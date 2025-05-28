@@ -34,3 +34,9 @@ export const createUserModel = async (
 export const getAllUsersModel = async () => {
   return await prisma.usuario.findMany()
 }
+
+export const deleteUserModel = async (cpf: string) => {
+  return await prisma.usuario.delete({
+    where: { cpf },
+  })
+}

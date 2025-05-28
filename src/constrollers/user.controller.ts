@@ -1,7 +1,11 @@
 import { FastifyInstance } from 'fastify'
 import z from 'zod'
 import { permission } from '../middlewares/permission.middleware'
-import { createUserService, getAllUserService } from '../services/user.service'
+import {
+  createUserService,
+  deleteUserService,
+  getAllUserService,
+} from '../services/user.service'
 
 const usuarioSchema = z.object({
   id: z.string().uuid(),
@@ -53,5 +57,19 @@ export default async function userController(server: FastifyInstance) {
         },
       },
       getAllUserService
+    ),
+    server.delete(
+      '/:cpf',
+      {
+        preHandler: permission(['ADM']),
+        schema: {
+          summary: 'Rota para deletar um usuario',
+          tags: ['Usuario'],
+          params: z.object({
+            cpf: z.string().length(11, 'CPF deve conter exatamente 11 dígitos'),
+          }),
+        },
+      },
+      deleteUserService
     )
 }

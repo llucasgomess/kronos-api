@@ -3,6 +3,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import z from 'zod'
 import {
   createUserModel,
+  deleteUserModel,
   getAllUsersModel,
   getUserByIdModel,
 } from '../models/user.model'
@@ -54,6 +55,30 @@ export const createUserService = async (
     success: true,
     message: 'Usuário criado com sucesso!',
   })
+}
+export const deleteUserService = async (
+  req: FastifyRequest,
+  res: FastifyReply
+) => {
+  const schemaParams = z.object({
+    cpf: z.string(),
+  })
+
+  const { cpf } = schemaParams.parse(req.params)
+
+  // Verificar se o CPF ou login já estão cadastrados
+  const existingUser = await getUserByIdModel(cpf)
+  if (!existingUser) {
+    return res
+      .status(404)
+      .send({ success: false, message: 'Usuário não encontrado!' })
+  }
+
+  // Deletar o usuário
+  await deleteUserModel(cpf)
+  // Retornar resposta de sucesso
+
+  res.status(204)
 }
 export const getAllUserService = async (
   req: FastifyRequest,
