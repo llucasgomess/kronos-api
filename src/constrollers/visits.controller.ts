@@ -72,9 +72,6 @@ export default async function visitsController(server: FastifyInstance) {
         schema: {
           summary: 'Rota para atualizar registro de visitas',
           tags: ['Visitas'],
-          body: z.object({
-            dataVisita: z.coerce.date(),
-          }),
           params: z.object({
             id: z.string().uuid(),
           }),

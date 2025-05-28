@@ -52,9 +52,8 @@ export const updateVisitsService = async (
     id: z.string().uuid(),
   })
   const { id } = validationParams.parse(req.params)
-  const { dataVisita } = validationBody.parse(req.body)
 
-  const visita = await updateVisitsModel(id, dataVisita)
+  const visita = await updateVisitsModel(id)
 
   return res.status(200).send(visita)
 }

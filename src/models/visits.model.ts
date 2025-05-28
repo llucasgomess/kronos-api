@@ -13,10 +13,10 @@ export const createVisitsModel = async (data: createVisitsModelProps) => {
   })
 }
 
-export const updateVisitsModel = async (id: string, dataVisita: Date) => {
+export const updateVisitsModel = async (id: string) => {
   return await prisma.visita.update({
     where: { id },
-    data: { dataVisitaFim: dataVisita },
+    data: { dataVisitaFim: new Date() },
   })
 }
 export const deleteVisitsModel = async (id: string) => {
