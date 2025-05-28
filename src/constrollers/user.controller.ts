@@ -30,16 +30,16 @@ export default async function userController(server: FastifyInstance) {
           nivelPermissao: z.number(),
           senha: z.string().min(8),
         }),
-        response: {
-          201: z.object({
-            success: z.boolean(),
-            message: z.string(),
-          }),
-          409: z.object({
-            success: z.boolean(),
-            message: z.string(),
-          }),
-        },
+        // response: {
+        //   201: z.object({
+        //     success: z.boolean(),
+        //     message: z.string(),
+        //   }),
+        //   409: z.object({
+        //     success: z.boolean(),
+        //     message: z.string(),
+        //   }),
+        // },
       },
     },
     createUserService

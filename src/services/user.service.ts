@@ -34,9 +34,8 @@ export const createUserService = async (
   const existingUser = await getUserByIdModel(cpf)
 
   if (existingUser) {
-    return res
-      .status(409)
-      .send({ success: false, message: 'CPF ou Login já cadastrados!' })
+    res.status(409).send({ error: true, message: 'CPF já cadastrado' })
+    return
   }
   const nomeArray = nome.split(' ')
   const primeiroNome = nomeArray[0]
